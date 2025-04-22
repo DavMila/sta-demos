@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="demo.css">
+  </head>
+<body>
+  <style>
+    .lidiv {
+      animation: fade-in 0.5s both;
+      animation-trigger: view() once contain 0% contain 100%;
+    }
+  </style>
+  <script src="flackr-polyfill.js"></script>
+  <div id="wrapper">
+    <h2>animation-trigger: once view() contain 0% contain 100%;</h2>
+    <p>A once trigger plays an animation just once and never again.</p>
+    <div id="scroller">
+      <div class="spacediv"></div>
+      <div class="lidiv">1</div>
+      <div class="lidiv">2</div>
+      <div class="lidiv">3</div>
+      <div class="lidiv">4</div>
+      <div class="lidiv">5</div>
+      <div class="lidiv">6</div>
+      <div class="lidiv">7</div>
+      <div class="lidiv">8</div>
+      <div class="lidiv">9</div>
+      <div class="lidiv">10</div>
+      <div class="lidiv">11</div>
+    </div>
+  </div>
+</body>
+
+</html>

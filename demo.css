@@ -1,0 +1,49 @@
+@keyframes fade-in {
+  from {
+    opacity: 0.5;
+    transform: translateX(-90%);
+    background-color: magenta;
+  }
+
+  to {
+    background-color: magenta;
+  }
+}
+
+#wrapper {
+  height: 90vh;
+  width: 65%;
+  justify-self: center;
+  text-align: center;
+  align-content: center;
+  border: solid 1px
+}
+
+#scroller {
+  height: 50%;
+  width: 50%;
+  border: solid 1px;
+  justify-self: center;
+  overflow-y: scroll;
+  background-color: black;
+}
+
+.lidiv {
+  list-style-type: none;
+  width: 95%;
+  height: 20%;
+  display: block;
+  margin-bottom: 10%;
+  background-color: blue;
+  position: relative;
+  text-align: right;
+  font-size: 5em;
+  color: white;
+  border-top-right-radius: 100px;
+}
+
+
+.spacediv {
+  height: 90%;
+  width: 95%;
+}
