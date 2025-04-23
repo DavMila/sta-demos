@@ -16,7 +16,7 @@
   justify-self: center;
   text-align: center;
   align-content: center;
-  border: solid 1px
+  border: solid 1px;
 }
 
 #scroller {
@@ -39,7 +39,8 @@
   text-align: right;
   font-size: 5em;
   color: white;
-  border-top-right-radius: 100px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 
