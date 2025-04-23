@@ -14,6 +14,14 @@
   <a href="index.html">demo list</a>
   <div id="wrapper">
     <h2>animation-trigger: state view() contain 0% contain 100%;</h2>
+    <div id="info">
+      <p>animation-trigger-type: state</p>
+      <p>animation-trigger-timeline: view()</p>
+      <p>animation-trigger-range-start: contain 0%</p>
+      <p>animation-trigger-range-end: contain 100%</p>
+      <p>animation-trigger-exit-range-start: auto (matches trigger-range-start)</p>
+      <p>animation-trigger-exit-range-end: auto (matches trigger-range-end)</p>
+    </div>
     <p>A repeat trigger plays an animation each time its trigger range is entered
         and pauses its animation each time its exit range is exited.
     </p>
@@ -33,6 +41,7 @@
       <div class="lidiv">11</div>
     </div>
     <p>This demos uses the <a href="https://github.com/flackr/web-demos/blob/master/scroll-triggered/scroll-triggered.js">polyfill</a> written by <a href="https://github.com/flackr">flackr</a>.
+    <p>(If the animations run prior to scrolling, please refresh to see the demo functioning correctly)</p>
   </div>
 </body>
 
