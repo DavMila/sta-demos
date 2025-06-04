@@ -1,0 +1,220 @@
+.ctrl,
+.info {
+  top: 0px;
+  width: 1fr;
+  resize: both;
+  position: relative;
+  display: inline-block;
+  justify-self: center;
+  text-align: center;
+}
+
+.ctrl {
+  height: 40%;
+}
+
+.info {
+    width: 15%;
+    position: absolute;
+    left: 10px;
+    border: solid 2px black;
+    top: 25%;
+}
+
+
+.admin, .stage {
+  width: 100%;
+  height: 48%;
+  position: relative;
+}
+.stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.scroller {
+  overflow-y: scroll;
+  border: solid 1px;
+  justify-self: center;
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0.1;
+    transform: scale(0.5, 0.5);
+    background-color: black;
+  }
+
+  to {
+    background-color: black;
+    transform: scale(1.5, 1.5);
+  }
+}
+
+.subject {
+  height: 100px;
+  width: 100%;  
+  background-color: black;
+}
+
+.subject {
+  view-timeline: --viewtimeline;
+}
+
+.target {
+  background-color: blue;
+  height: 200px;
+  width: 100px;
+  animation: fade-in .5s both;
+  display: inline-block;
+  justify-self: center;
+  align-self: center;
+}
+
+#targetborder {
+  border: solid 1px;
+}
+
+.space {
+  height: 300px;
+  width: 90%;
+  justify-self: center;
+}
+
+.cssText {
+    height: 90%;
+    width: 100%;
+    border: solid 5px black;
+    padding: 0px;
+    background-color: lightgrey;
+    align-content: center;
+    text-align: left;
+}
+.demoTitle {
+    height: 50%;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.once {
+  animation-trigger: --viewtimeline once contain 0% contain 100%;
+}
+
+.repeat {
+  animation-trigger: --viewtimeline repeat contain 0% contain 100% cover 0% cover 100%;
+}
+
+.alternate {
+  animation-trigger: --viewtimeline alternate contain 0% contain 100%;
+}
+
+.state {
+  animation-trigger: --viewtimeline state contain 0% contain 100%;
+}
+
+.demo, .practicaldemo {
+  height: 90vh;
+  width: 90vw;
+  border: solid 1px black;
+  timeline-scope: --viewtimeline;
+  padding: 20px;
+  position: relative;
+  justify-self: center;
+}
+
+@keyframes show {
+	to {
+		opacity: 1;
+	}
+}
+
+.practicaldemo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  &> .scroller {
+    align-self: center;
+  }
+  &> .subject {
+    color: white;
+  }
+  timeline-scope: --viewtimeline1, --viewtimeline2, --viewtimeline3, --viewtimeline4, --viewtimeline5, --viewtimeline6;
+
+  #showbox {
+    align-self: center;
+    height: 80%;
+    width: 90%;
+    display: grid;
+    position: relative;
+  }
+  #showbox .target {
+    align-self: center;
+    justify-self: center;
+    animation: show .25s both;
+    animation-trigger: alternate contain 0% contain 100%;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  #showbox #target1 {
+    animation-trigger-timeline: --viewtimeline1;
+  }
+
+  #showbox #target2 {
+    animation-trigger-timeline: --viewtimeline2;
+  }
+
+  #showbox #target3 {
+    animation-trigger-timeline: --viewtimeline3;
+  }
+
+  #showbox #target4 {
+    animation-trigger-timeline: --viewtimeline4;
+  }
+
+  #showbox #target5 {
+    animation-trigger-timeline: --viewtimeline5;
+  }
+
+  #showbox #target6 {
+    animation-trigger-timeline: --viewtimeline6;
+  }
+
+  #subject1 {
+    view-timeline: --viewtimeline1;
+  }
+
+  #subject2 {
+    view-timeline: --viewtimeline2;
+  }
+
+  #subject3 {
+    view-timeline: --viewtimeline3;
+  }
+
+  #subject4 {
+    view-timeline: --viewtimeline4;
+  }
+
+  #subject5 {
+    view-timeline: --viewtimeline5;
+  }
+
+  #subject6 {
+    view-timeline: --viewtimeline6;
+  }
+
+  
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+  <div id="demos">
+    <div id="alternatedemo" class="demo">
+        <div class="demoTitle">
+          <div>
+            <h1>ALTERNATE</h1>
+              <p>The box below animates when the box within the scroll container comes fully into view.
+              To the right is the CSS setting up this scroll-triggered animation:</p>
+            </div>
+            <div class="cssText">
+              <pre>
+                @keyframes fade-in {
+                    from {
+                      opacity: 0.1;
+                      transform: scaleX(0.1);
+                      background-color: black;
+                    }
+                  
+                    to {
+                      background-color: black;
+                      transform: scaleX(3);
+                    }
+                }
+                animation: fade-in .5s both;
+                animation-trigger: --viewtimeline alternate contain 0% contain 100%;   
+            </pre>
+          </div>
+        </div>
+      <div id="stage" class="stage">
+        <div id="target" class="alternate target"></div>
+        <div id="scroller" class="scroller">
+          <div class="space"></div>
+          <div class="space"></div>
+          <div id="targetborder">
+            <div id="subject" class="subject"></div>
+          </div>
+          <div class="space"></div>
+          <div class="space"></div>
+        </div>
+          <div id="ctrl" class="ctrl">
+            <h2>Controls</h2>
+            <div id="playstatectrl">
+              animation-play-state
+              <input type="radio" id="playstate_running" name="alternateplaystate">
+              <label for="playstate_running">running</label>
+              <input type="radio" id="playstate_paused" name="alternateplaystate">
+              <label for="playstate_paused">paused</label><br>
+              animation-fill-mode
+              <input type="radio" id="fillmode_none" name="alternatefillmode">
+              <label for="fillmode_none">none</label>
+              <input type="radio" id="fillmode_backwards" name="alternatefillmode">
+              <label for="fillmode_backwards">backwards</label>
+              <input type="radio" id="fillmode_forwards" name="alternatefillmode">
+              <label for="fillmode_fowards">forwards</label>
+              <input type="radio" id="fillmode_both" name="alternatefillmode">
+              <label for="fillmode_both">both</label>
+            </div>
+          </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div style="justify-self: center">A more realistic example below involves animating pictures into view as their
+    associated sections are scrolled into view</div>
+
+  <br>
+
+  <div class="practicaldemo" id="practicalalternatedemo">
+    <div id="showbox">
+      <div id="target1" class="alternate target">
+        <img src="https://picsum.photos/seed/1/600/600" alt="">
+      </div>
+      <div id="target2" class="alternate target">
+        <img src="https://picsum.photos/seed/2/600/600" alt="">
+      </div>
+      <div id="target3" class="alternate target">
+        <img src="https://picsum.photos/seed/3/600/600" alt="">
+      </div>
+      <div id="target4" class="alternate target">
+        <img src="https://picsum.photos/seed/4/600/600" alt="">
+      </div>
+      <div id="target5" class="alternate target">
+        <img src="https://picsum.photos/seed/5/600/600" alt="">
+      </div>
+      <div id="target6" class="alternate target">
+        <img src="https://picsum.photos/seed/6/600/600" alt="">
+      </div>
+    </div>
+    <div id="scroller" class="scroller">
+      <div class="space"></div>
+      <div style="justify-self: center">Scroll the sections into view and observer their related pictures animate into view on the left.</div>
+      <div class="space"></div>
+      <div id="subject1" class="subject">
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+    
+      <div id="subject2" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject3" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject4" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject5" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject6" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="./index.js"></script>
+</body>
+
+</html>
