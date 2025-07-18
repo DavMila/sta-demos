@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="./flackr-polyfill.js" type="application/javascript"></script>
+</head>
+
+<body>
+  <style>
+    .space {
+      height: 300px;
+      width: 90%;
+      justify-self: center;
+    }
+
+    .subject {
+      height: 100px;
+      width: 100%;
+      background-color: black;
+    }
+
+    .scroller {
+      overflow-y: scroll;
+      border: solid 1px;
+      justify-self: center;
+      height: 100%;
+      width: 100%;
+      display: inline-block;
+    }
+
+    .demo,
+    .practicaldemo,
+    .multitriggerdemo {
+      height: 90vh;
+      width: 90vw;
+      border: solid 1px black;
+      timeline-scope: --viewtimeline;
+      padding: 20px;
+      position: relative;
+      justify-self: center;
+    }
+
+    @keyframes show {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .target {
+      background-color: blue;
+      height: 200px;
+      width: 100px;
+      display: inline-block;
+      justify-self: center;
+      align-self: center;
+    }
+
+    .practicaldemo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+
+      &>.scroller {
+        align-self: center;
+      }
+
+      &>.subject {
+        color: white;
+      }
+
+      timeline-scope: --viewtimeline1,
+      --viewtimeline2,
+      --viewtimeline3,
+      --viewtimeline4,
+      --viewtimeline5,
+      --viewtimeline6;
+
+      #showbox {
+        align-self: center;
+        height: 80%;
+        width: 90%;
+        display: grid;
+        position: relative;
+      }
+
+      #showbox .target {
+        align-self: center;
+        justify-self: center;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      #showbox #targetborder {
+        align-self: center;
+        justify-self: center;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        border: solid 10px;
+        background-color: black;
+      }
+
+      #showbox #target1 {
+        animation: show 1s both;
+        animation-trigger: --viewtimeline1 alternate contain 0% contain 100%;
+      }
+
+      #showbox #target2 {
+        animation: show 1s both;
+        animation-trigger: --viewtimeline2 alternate contain 0% contain 100%;
+      }
+
+      #showbox #target3 {
+        animation: show 1s both;
+        animation-trigger: --viewtimeline3 alternate contain 0% contain 100%;
+      }
+
+      #showbox #target4 {
+        animation: show 1s both;
+        animation-trigger: --viewtimeline4 alternate contain 0% contain 100%;
+      }
+
+      #showbox #target5 {
+        animation: show 1s both;
+        animation-trigger: --viewtimeline5 alternate contain 0% contain 100%;
+      }
+
+      #showbox #target6 {
+        animation: show 1s both;
+        animation-trigger: --viewtimeline6 alternate contain 0% contain 100%;
+      }
+
+      #subject1 {
+        view-timeline: --viewtimeline1;
+      }
+
+      #subject2 {
+        view-timeline: --viewtimeline2;
+      }
+
+      #subject3 {
+        view-timeline: --viewtimeline3;
+      }
+
+      #subject4 {
+        view-timeline: --viewtimeline4;
+      }
+
+      #subject5 {
+        view-timeline: --viewtimeline5;
+      }
+
+      #subject6 {
+        view-timeline: --viewtimeline6;
+      }
+    }
+  </style>
+  <br>
+
+  <br>
+
+  <div class="practicaldemo" id="practicalalternatedemo">
+    <div id="showbox">
+      <div id="targetborder"></div>
+      <div id="target1" class="alternate target">
+        <img src="https://picsum.photos/seed/1/600/600" alt="">
+      </div>
+      <div id="target2" class="alternate target">
+        <img src="https://picsum.photos/seed/2/600/600" alt="">
+      </div>
+      <div id="target3" class="alternate target">
+        <img src="https://picsum.photos/seed/3/600/600" alt="">
+      </div>
+      <div id="target4" class="alternate target">
+        <img src="https://picsum.photos/seed/4/600/600" alt="">
+      </div>`
+      <div id="target5" class="alternate target">
+        <img src="https://picsum.photos/seed/5/600/600" alt="">
+      </div>
+      <div id="target6" class="alternate target">
+        <img src="https://picsum.photos/seed/6/600/600" alt="">
+      </div>
+    </div>
+    <div id="scroller" class="scroller">
+      <div class="space"></div>
+      <div style="justify-self: center">Scroll the sections into view and observer their related pictures animate into
+        view on the left.</div>
+      <div class="space"></div>
+      <div class="space"></div>
+      <div class="space"></div>
+      <div id="subject1" class="subject">
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis
+          animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut
+          et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis
+          animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut
+          et quo!</p>
+      </div>
+
+      <div id="subject2" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject3" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject4" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject5" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div id="subject6" class="subject"></div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+      <div class="space">
+        <p id="p1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quod consequatur unde perferendis animi, praesentium odio voluptates provident iusto deleniti! Alias quasi ab tempora sunt? Nesciunt beatae aut et quo!</p>
+      </div>
+    </div>
+  </div>
+  <br>
+  </div>
+</body>
+
+</html>
