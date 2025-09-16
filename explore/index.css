@@ -54,17 +54,6 @@
   }
 }
 
-.subject {
-  height: 100px;
-  width: 100%;  
-  background-color: black;
-}
-
-.subject {
-  view-timeline: --viewtimeline;
-  timeline-trigger: --viewtrigger view() contain 0% contain 100%;
-}
-
 .target {
   background-color: blue;
   height: 200px;
@@ -77,6 +66,55 @@
 
 #targetborder {
   border: solid 1px;
+}
+
+
+.subject {
+  height: 100px;
+  width: 100%;  
+  background-color: black;
+}
+
+.oncesubject {
+  /* view-timeline: --viewtimeline; */
+  timeline-trigger: --oncetrigger view() contain 0% contain 100%;
+}
+
+.oncetarget {
+  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
+  animation-trigger: trigger(--oncetrigger, enter play-once);
+}
+
+.repeatsubject {
+  /* view-timeline: --viewtimeline; */
+  timeline-trigger: --repeattrigger view() contain 0% contain 100% cover 0% cover 100%;
+}
+
+.repeattarget {
+  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
+  animation-trigger: trigger(--repeattrigger, enter play, exit reset);
+}
+
+
+.alternatesubject {
+  /* view-timeline: --viewtimeline; */
+  timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
+}
+
+.alternatetarget {
+  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
+  animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
+}
+
+.statesubject {
+  /* view-timeline: --viewtimeline; */
+  timeline-trigger: --statetrigger view() contain 0% contain 100%;
+}
+
+.statetarget {
+  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
+  animation: fade-in 10s both;
+  animation-trigger: trigger(--statetrigger, enter play, exit pause);
 }
 
 .space {
@@ -101,26 +139,6 @@
     justify-content: center;
     display: grid;
     grid-template-columns: 1fr 1fr;
-}
-
-.once {
-  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
-  animation-trigger: trigger(--viewtrigger, enter play-once);
-}
-
-.repeat {
-  /* animation-trigger: --viewtimeline repeat contain 0% contain 100% cover 0% cover 100%; */
-  animation-trigger: trigger(--viewtrigger, enter play, exit reset);
-}
-
-.alternate {
-  /* animation-trigger: --viewtimeline alternate contain 0% contain 100% cover 0% cover 100%; */
-  animation-trigger: trigger(--viewtrigger, enter play-forwards, exit play-backwards);
-}
-
-.state {
-  /* animation-trigger: --viewtimeline state contain 0% contain 100%; */
-  animation-trigger: trigger(--viewtrigger, enter play, exit pause);
 }
 
 .demo, .practicaldemo {
