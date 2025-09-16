@@ -13,7 +13,7 @@
         scroll-triggered animations on the web: "once", "repeat", "alternate", & "state."
       </p>
     </div>
-    <br><br>
+    <br>
     <div id="oncedemo" class="demo">
       <button class="demo-trigger" aria-expanded="false" aria-controls="demo-content-1 oncedemo">
         ONCE
@@ -23,34 +23,36 @@
           <div>
             <p>The box below animates when the box within the scroll container comes fully into view.
               The animation runs the first "enter" occasion but does nothing on subsequent ones.
-              To the right is the CSS setting up this scroll-triggered animation:</p>
+              To the right is the CSS setting up this scroll-triggered animation:
+            </p>
           </div>
-          <div class="cssText" id="cssText">
-            <pre>
-                    @keyframes fade-in {
-                        from {
-                          opacity: 0.1;
-                          transform: scaleX(0.1);
-                          background-color: black;
-                        }
-                      
-                        to {
-                          background-color: black;
-                          transform: scaleX(3);
-                        }
-                    }
-                    .source {
-                      timeline-trigger: --oncetrigger view() contain 0% contain 100%;
-                    }
-                    .target {
-                      animation: fade-in .5s both;
-                      animation-trigger: trigger(--oncetrigger, enter play-once);
-                    }
-                </pre>
-          </div>
-        </div>
-        <div id="stage" class="stage">
           <div id="target" class="oncetarget target"></div>
+        </div>
+        
+        <div id="stage" class="stage">
+          <div class="cssText" id="cssText">
+          <pre>
+    @keyframes fade-in {
+        from {
+          opacity: 0.1;
+          transform: scaleX(0.1);
+          background-color: black;
+        }
+      
+        to {
+          background-color: black;
+          transform: scaleX(3);
+        }
+    }
+    .source {
+      timeline-trigger: --oncetrigger view() contain 0% contain 100%;
+    }
+    .target {
+      animation: fade-in .5s both;
+      animation-trigger: trigger(--oncetrigger, enter play-once);
+    }
+                      </pre>
+        </div>
           <div id="scroller" class="scroller">
             <div class="space"></div>
             <div class="space"></div>
@@ -62,7 +64,7 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
     <br> <br>
     <div id="repeatdemo" class="demo">
       <button class="demo-trigger" aria-expanded="false" aria-controls="demo-content-2 repeatdemo">
@@ -74,32 +76,33 @@
             <p>The animation plays forward on each occurrence of "enter" and is reset to current time
               zero on each occurrence of "exit".</p>
           </div>
-          <div class="cssText" id="cssText">
-            <pre>
-                    @keyframes fade-in {
-                        from {
-                          opacity: 0.1;
-                          transform: scaleX(0.1);
-                          background-color: black;
-                        }
-                      
-                        to {
-                          background-color: black;
-                          transform: scaleX(3);
-                        }
-                    }
-                    .source {
-                      timeline-trigger: --repeattrigger view() contain 0% contain 100% cover 0% cover 100%;
-                    }
-                    .target {
-                      animation: fade-in .5s both;
-                      animation-trigger: trigger(--repeattrigger, enter play, exit reset);
-                    }
-                </pre>
-          </div>
+          <div id="target" class="repeattarget target"></div>
+          
         </div>
         <div id="stage" class="stage">
-          <div id="target" class="repeattarget target"></div>
+          <div class="cssText" id="cssText">
+            <pre>
+  @keyframes fade-in {
+      from {
+        opacity: 0.1;
+        transform: scaleX(0.1);
+        background-color: black;
+      }
+    
+      to {
+        background-color: black;
+        transform: scaleX(3);
+      }
+  }
+  .source {
+    timeline-trigger: --repeattrigger view() contain 0% contain 100% cover 0% cover 100%;
+  }
+  .target {
+    animation: fade-in .5s both;
+    animation-trigger: trigger(--repeattrigger, enter play, exit reset);
+  }
+                </pre>
+          </div>
           <div id="scroller" class="scroller">
             <div class="space"></div>
             <div class="space"></div>
@@ -123,32 +126,32 @@
             <p>The animation plays forward on each occurrence of "enter" and plays in reverse
               on each occurrence of "exit".</p>
           </div>
-          <div class="cssText" id="cssText">
-            <pre>
-                    @keyframes fade-in {
-                        from {
-                          opacity: 0.1;
-                          transform: scaleX(0.1);
-                          background-color: black;
-                        }
-                      
-                        to {
-                          background-color: black;
-                          transform: scaleX(3);
-                        }
-                    }
-                    .source {
-                      timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
-                    }
-                    .target {
-                      animation: fade-in .5s both;
-                      animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
-                    }
-                </pre>
-          </div>
+          <div id="target" class="alternatetarget target"></div>
         </div>
         <div id="stage" class="stage">
-          <div id="target" class="alternatetarget target"></div>
+          <div class="cssText" id="cssText">
+            <pre>
+ @keyframes fade-in {
+     from {
+       opacity: 0.1;
+       transform: scaleX(0.1);
+       background-color: black;
+     }
+   
+     to {
+       background-color: black;
+       transform: scaleX(3);
+     }
+ }
+ .source {
+   timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
+ }
+ .target {
+   animation: fade-in .5s both;
+   animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
+ }
+                </pre>
+          </div>
           <div id="scroller" class="scroller">
             <div class="space"></div>
             <div class="space"></div>
@@ -173,32 +176,32 @@
               on each occurrence of "exit". (animation-duration (10s) is extended in this demo
               to meake it a bit easier to interact with)</p>
           </div>
-          <div class="cssText" id="cssText">
-            <pre>
-                    @keyframes fade-in {
-                        from {
-                          opacity: 0.1;
-                          transform: scaleX(0.1);
-                          background-color: black;
-                        }
-                      
-                        to {
-                          background-color: black;
-                          transform: scaleX(3);
-                        }
-                    }
-                    .source {
-                      timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
-                    }
-                    .target {
-                      animation: fade-in 10s both;
-                      animation-trigger: trigger(--alternatetrigger, enter play, exit pause);
-                    }
-                </pre>
-          </div>
+          <div id="target" class="statetarget target"></div>
         </div>
         <div id="stage" class="stage">
-          <div id="target" class="statetarget target"></div>
+          <div class="cssText" id="cssText">
+            <pre>
+    @keyframes fade-in {
+        from {
+          opacity: 0.1;
+          transform: scaleX(0.1);
+          background-color: black;
+        }
+      
+        to {
+          background-color: black;
+          transform: scaleX(3);
+        }
+    }
+    .source {
+      timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
+    }
+    .target {
+      animation: fade-in 10s both;
+      animation-trigger: trigger(--alternatetrigger, enter play, exit pause);
+    }
+                </pre>
+          </div>
           <div id="scroller" class="scroller">
             <div class="space"></div>
             <div class="space"></div>

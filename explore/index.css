@@ -3,15 +3,15 @@
   height: 48%;
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .scroller {
   overflow-y: scroll;
   border: solid 1px;
   justify-self: center;
-  height: 100%;
-  width: 100%;
+  height: 50%;
+  width: 50%;
   display: inline-block;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .demoTitle {
-    height: 50%;
+    height: 30%;
     width: 100%;
     text-align: center;
     justify-content: center;
@@ -43,19 +43,19 @@
 @keyframes fade-in {
   from {
     opacity: 0.1;
-    transform: scale(0.5, 0.5);
+    transform: scale(0.5, 1);
     background-color: black;
   }
 
   to {
     background-color: black;
-    transform: scale(1.5, 1.5);
+    transform: scale(3, 1);
   }
 }
 
 .target {
   background-color: blue;
-  height: 200px;
+  height: 100px;
   width: 100px;
   animation: fade-in .5s both;
   display: inline-block;
@@ -127,10 +127,10 @@
 }
 
 
-@keyframes borderswell {
-  0% { border-right: solid 1px; border-bottom: solid 1px; }
-  50% { border-right: solid 5px; border-bottom: solid 10px; border-color: grey; }
-  100% { border-right: solid 1px; border-bottom: solid 1px; }
+@keyframes boxshadowswell {
+  0% { box-shadow: 5px 5px 5px 5px gray; }
+  50% { box-shadow: 7px 10px 10px 7px gray; }
+  100% { box-shadow: 5px 5px 5px 5px gray; }
 }
 
 /* Fade-in/fade-out image demo below. */
@@ -151,7 +151,7 @@
     width: 90%;
     display: grid;
     position: relative;
-    animation: borderswell .5s linear both;
+    animation: boxshadowswell .5s linear both;
     animation-trigger: trigger(--viewtrigger1, enter play)
                        trigger(--viewtrigger2, enter play)
                        trigger(--viewtrigger3, enter play)
