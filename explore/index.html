@@ -28,8 +28,9 @@
                       transform: scaleX(3);
                     }
                 }
+                timeline-trigger: --viewtrigger view() contain 0% contain 100%;
                 animation: fade-in .5s both;
-                animation-trigger: --viewtimeline alternate contain 0% contain 100%;   
+                animation-trigger: trigger(--viewtrigger, enter play-forwards, exit play-backwards);
             </pre>
           </div>
         </div>
@@ -75,22 +76,22 @@
 
   <div class="practicaldemo" id="practicalalternatedemo">
     <div id="showbox">
-      <div id="target1" class="alternate target">
+      <div id="target1" class="target">
         <img src="https://picsum.photos/seed/1/600/600" alt="">
       </div>
-      <div id="target2" class="alternate target">
+      <div id="target2" class="target">
         <img src="https://picsum.photos/seed/2/600/600" alt="">
       </div>
-      <div id="target3" class="alternate target">
+      <div id="target3" class="target">
         <img src="https://picsum.photos/seed/3/600/600" alt="">
       </div>
-      <div id="target4" class="alternate target">
+      <div id="target4" class="target">
         <img src="https://picsum.photos/seed/4/600/600" alt="">
       </div>
-      <div id="target5" class="alternate target">
+      <div id="target5" class="target">
         <img src="https://picsum.photos/seed/5/600/600" alt="">
       </div>
-      <div id="target6" class="alternate target">
+      <div id="target6" class="target">
         <img src="https://picsum.photos/seed/6/600/600" alt="">
       </div>
     </div>

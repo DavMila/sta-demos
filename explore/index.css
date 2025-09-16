@@ -62,6 +62,7 @@
 
 .subject {
   view-timeline: --viewtimeline;
+  timeline-trigger: --viewtrigger view() contain 0% contain 100%;
 }
 
 .target {
@@ -103,19 +104,23 @@
 }
 
 .once {
-  animation-trigger: --viewtimeline once contain 0% contain 100%;
+  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
+  animation-trigger: trigger(--viewtrigger, enter play-once);
 }
 
 .repeat {
-  animation-trigger: --viewtimeline repeat contain 0% contain 100% cover 0% cover 100%;
+  /* animation-trigger: --viewtimeline repeat contain 0% contain 100% cover 0% cover 100%; */
+  animation-trigger: trigger(--viewtrigger, enter play, exit reset);
 }
 
 .alternate {
-  animation-trigger: --viewtimeline alternate contain 0% contain 100%;
+  /* animation-trigger: --viewtimeline alternate contain 0% contain 100% cover 0% cover 100%; */
+  animation-trigger: trigger(--viewtrigger, enter play-forwards, exit play-backwards);
 }
 
 .state {
-  animation-trigger: --viewtimeline state contain 0% contain 100%;
+  /* animation-trigger: --viewtimeline state contain 0% contain 100%; */
+  animation-trigger: trigger(--viewtrigger, enter play, exit pause);
 }
 
 .demo, .practicaldemo {
@@ -157,7 +162,7 @@
     align-self: center;
     justify-self: center;
     animation: show .25s both;
-    animation-trigger: alternate contain 0% contain 100%;
+    /* animation-trigger: alternate contain 0% contain 100%; */
     position: absolute;
     height: 100%;
     width: 100%;
@@ -169,51 +174,63 @@
   }
 
   #showbox #target1 {
-    animation-trigger-timeline: --viewtimeline1;
+    /* animation-trigger-timeline: --viewtimeline1; */
+    animation-trigger: trigger(--viewtrigger1, enter play-forwards, exit play-backwards)
   }
 
   #showbox #target2 {
-    animation-trigger-timeline: --viewtimeline2;
+    /* animation-trigger-timeline: --viewtimeline2; */
+    animation-trigger: trigger(--viewtrigger2, enter play-forwards, exit play-backwards)
   }
 
   #showbox #target3 {
-    animation-trigger-timeline: --viewtimeline3;
+    /* animation-trigger-timeline: --viewtimeline3; */
+    animation-trigger: trigger(--viewtrigger3, enter play-forwards, exit play-backwards)
   }
 
   #showbox #target4 {
-    animation-trigger-timeline: --viewtimeline4;
+    /* animation-trigger-timeline: --viewtimeline4; */
+    animation-trigger: trigger(--viewtrigger4, enter play-forwards, exit play-backwards)
   }
 
   #showbox #target5 {
-    animation-trigger-timeline: --viewtimeline5;
+    /* animation-trigger-timeline: --viewtimeline5; */
+    animation-trigger: trigger(--viewtrigger5, enter play-forwards, exit play-backwards)
   }
 
   #showbox #target6 {
-    animation-trigger-timeline: --viewtimeline6;
+    /* animation-trigger-timeline: --viewtimeline6; */
+    animation-trigger: trigger(--viewtrigger6, enter play-forwards, exit play-backwards)
   }
 
   #subject1 {
-    view-timeline: --viewtimeline1;
+    /* view-timeline: --viewtimeline1; */
+    timeline-trigger: --viewtrigger1 view() contain 0% contain 100%;
   }
 
   #subject2 {
-    view-timeline: --viewtimeline2;
+    /* view-timeline: --viewtimeline2; */
+    timeline-trigger: --viewtrigger2 view() contain 0% contain 100%;
   }
 
   #subject3 {
-    view-timeline: --viewtimeline3;
+    /* view-timeline: --viewtimeline3; */
+    timeline-trigger: --viewtrigger3 view() contain 0% contain 100%;
   }
 
   #subject4 {
-    view-timeline: --viewtimeline4;
+    /* view-timeline: --viewtimeline4; */
+    timeline-trigger: --viewtrigger4 view() contain 0% contain 100%;
   }
 
   #subject5 {
-    view-timeline: --viewtimeline5;
+    /* view-timeline: --viewtimeline5; */
+    timeline-trigger: --viewtrigger5 view() contain 0% contain 100%;
   }
 
   #subject6 {
-    view-timeline: --viewtimeline6;
+    /* view-timeline: --viewtimeline6; */
+    timeline-trigger: --viewtrigger6 view() contain 0% contain 100%;
   }
 
   
