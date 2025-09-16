@@ -126,6 +126,13 @@
 	}
 }
 
+
+@keyframes borderswell {
+  0% { border-right: solid 1px; border-bottom: solid 1px; }
+  50% { border-right: solid 5px; border-bottom: solid 10px; border-color: grey; }
+  100% { border-right: solid 1px; border-bottom: solid 1px; }
+}
+
 /* Fade-in/fade-out image demo below. */
 .practicaldemo {
   display: grid;
@@ -144,6 +151,13 @@
     width: 90%;
     display: grid;
     position: relative;
+    animation: borderswell .5s linear both;
+    animation-trigger: trigger(--viewtrigger1, enter play)
+                       trigger(--viewtrigger2, enter play)
+                       trigger(--viewtrigger3, enter play)
+                       trigger(--viewtrigger4, enter play)
+                       trigger(--viewtrigger5, enter play)
+                       trigger(--viewtrigger6, enter play);
   }
   #showbox .target {
     align-self: center;
