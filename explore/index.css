@@ -1,33 +1,7 @@
-.ctrl,
-.info {
-  top: 0px;
-  width: 1fr;
-  resize: both;
-  position: relative;
-  display: inline-block;
-  justify-self: center;
-  text-align: center;
-}
-
-.ctrl {
-  height: 40%;
-}
-
-.info {
-    width: 15%;
-    position: absolute;
-    left: 10px;
-    border: solid 2px black;
-    top: 25%;
-}
-
-
-.admin, .stage {
+.stage {
   width: 100%;
   height: 48%;
   position: relative;
-}
-.stage {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
@@ -39,6 +13,31 @@
   height: 100%;
   width: 100%;
   display: inline-block;
+}
+
+.space {
+  height: 300px;
+  width: 90%;
+  justify-self: center;
+}
+
+.cssText {
+    height: 90%;
+    width: 100%;
+    border: solid 5px black;
+    padding: 0px;
+    background-color: lightgrey;
+    align-content: center;
+    text-align: left;
+}
+
+.demoTitle {
+    height: 50%;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 @keyframes fade-in {
@@ -68,84 +67,54 @@
   border: solid 1px;
 }
 
-
 .subject {
   height: 100px;
   width: 100%;  
   background-color: black;
 }
 
+/* ONCE */
 .oncesubject {
-  /* view-timeline: --viewtimeline; */
   timeline-trigger: --oncetrigger view() contain 0% contain 100%;
 }
 
 .oncetarget {
-  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
   animation-trigger: trigger(--oncetrigger, enter play-once);
 }
 
+/* REPEAT */
 .repeatsubject {
-  /* view-timeline: --viewtimeline; */
   timeline-trigger: --repeattrigger view() contain 0% contain 100% cover 0% cover 100%;
 }
 
 .repeattarget {
-  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
   animation-trigger: trigger(--repeattrigger, enter play, exit reset);
 }
 
-
+/* ALTERNATE */
 .alternatesubject {
-  /* view-timeline: --viewtimeline; */
   timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
 }
 
 .alternatetarget {
-  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
   animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
 }
 
+/* STATE */
 .statesubject {
-  /* view-timeline: --viewtimeline; */
   timeline-trigger: --statetrigger view() contain 0% contain 100%;
 }
 
 .statetarget {
-  /* animation-trigger: --viewtimeline once contain 0% contain 100%; */
+  /* Make very slow for playing around with. */
   animation: fade-in 10s both;
   animation-trigger: trigger(--statetrigger, enter play, exit pause);
-}
-
-.space {
-  height: 300px;
-  width: 90%;
-  justify-self: center;
-}
-
-.cssText {
-    height: 90%;
-    width: 100%;
-    border: solid 5px black;
-    padding: 0px;
-    background-color: lightgrey;
-    align-content: center;
-    text-align: left;
-}
-.demoTitle {
-    height: 50%;
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
 }
 
 .demo, .practicaldemo {
   height: 90vh;
   width: 90vw;
   border: solid 1px black;
-  timeline-scope: --viewtimeline;
   padding: 20px;
   position: relative;
   justify-self: center;
@@ -157,6 +126,7 @@
 	}
 }
 
+/* Fade-in/fade-out image demo below. */
 .practicaldemo {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -167,7 +137,6 @@
   &> .subject {
     color: white;
   }
-  timeline-scope: --viewtimeline1, --viewtimeline2, --viewtimeline3, --viewtimeline4, --viewtimeline5, --viewtimeline6;
 
   #showbox {
     align-self: center;
@@ -180,7 +149,6 @@
     align-self: center;
     justify-self: center;
     animation: show .25s both;
-    /* animation-trigger: alternate contain 0% contain 100%; */
     position: absolute;
     height: 100%;
     width: 100%;
@@ -192,64 +160,125 @@
   }
 
   #showbox #target1 {
-    /* animation-trigger-timeline: --viewtimeline1; */
-    animation-trigger: trigger(--viewtrigger1, enter play-forwards, exit play-backwards)
+    animation-trigger: trigger(--viewtrigger1, enter play-forwards, exit play-backwards);
   }
 
   #showbox #target2 {
-    /* animation-trigger-timeline: --viewtimeline2; */
-    animation-trigger: trigger(--viewtrigger2, enter play-forwards, exit play-backwards)
+    animation-trigger: trigger(--viewtrigger2, enter play-forwards, exit play-backwards);
   }
 
   #showbox #target3 {
-    /* animation-trigger-timeline: --viewtimeline3; */
-    animation-trigger: trigger(--viewtrigger3, enter play-forwards, exit play-backwards)
+    animation-trigger: trigger(--viewtrigger3, enter play-forwards, exit play-backwards);
   }
 
   #showbox #target4 {
-    /* animation-trigger-timeline: --viewtimeline4; */
-    animation-trigger: trigger(--viewtrigger4, enter play-forwards, exit play-backwards)
+    animation-trigger: trigger(--viewtrigger4, enter play-forwards, exit play-backwards);
   }
 
   #showbox #target5 {
-    /* animation-trigger-timeline: --viewtimeline5; */
-    animation-trigger: trigger(--viewtrigger5, enter play-forwards, exit play-backwards)
+    animation-trigger: trigger(--viewtrigger5, enter play-forwards, exit play-backwards);
   }
 
   #showbox #target6 {
-    /* animation-trigger-timeline: --viewtimeline6; */
-    animation-trigger: trigger(--viewtrigger6, enter play-forwards, exit play-backwards)
+    animation-trigger: trigger(--viewtrigger6, enter play-forwards, exit play-backwards);
   }
 
   #subject1 {
-    /* view-timeline: --viewtimeline1; */
     timeline-trigger: --viewtrigger1 view() contain 0% contain 100%;
   }
 
   #subject2 {
-    /* view-timeline: --viewtimeline2; */
     timeline-trigger: --viewtrigger2 view() contain 0% contain 100%;
   }
 
   #subject3 {
-    /* view-timeline: --viewtimeline3; */
     timeline-trigger: --viewtrigger3 view() contain 0% contain 100%;
   }
 
   #subject4 {
-    /* view-timeline: --viewtimeline4; */
     timeline-trigger: --viewtrigger4 view() contain 0% contain 100%;
   }
 
   #subject5 {
-    /* view-timeline: --viewtimeline5; */
     timeline-trigger: --viewtrigger5 view() contain 0% contain 100%;
   }
 
   #subject6 {
-    /* view-timeline: --viewtimeline6; */
     timeline-trigger: --viewtrigger6 view() contain 0% contain 100%;
   }
+}
 
-  
+/* Accordion functionality. "Trigger" here is entirely unrelated. */
+/* Credit: Gemini.                                                */
+
+/* Style for the clickable trigger button */
+.demo-trigger {
+  /* Basic styling */
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  text-align: left;
+  background-color: #f1f1f1;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s ease;
+}
+
+.demo-trigger:hover {
+  background-color: #ddd;
+}
+
+/* Arrow icon for the trigger button */
+.demo-trigger::after {
+  content: '';
+  float: right;
+  margin-left: 1em;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #333; /* Right arrow */
+  transform: rotate(-90deg);
+  transition: transform 0.2s ease;
+}
+
+/* Rotate the arrow when the button is expanded */
+.demo-trigger[aria-expanded="true"]::after {
+  transform: rotate(0deg); /* Down arrow */
+}
+
+/* The content panel */
+.demo-content {
+  padding: 0 18px;
+  overflow: hidden;
+  background-color: white;
+  /* Smooth transition for expanding/collapsing */
+  transition: max-height 0.3s ease-out;
+  max-height: 0; /* This is key for the animation */
+}
+
+#oncedemo,
+#repeatdemo,
+#alternatedemo,
+#statedemo {
+  display: flex;
+  flex-direction: column;
+  height: 5vh; /* Default collapsed height */
+  transition: height 0.3s ease-out; /* Animate the height change */
+}
+
+#oncedemo.expanded,
+#repeatdemo.expanded,
+#alternatedemo.expanded,
+#statedemo.expanded {
+  height: 90vh; /* Expanded height */
+}
+
+#oncedemo .demo-content,
+#repeatdemo .demo-content,
+#alternatedemo .demo-content,
+#statedemo .demo-content {
+  flex: 1;
+  min-height: 0;
 }

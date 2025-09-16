@@ -256,3 +256,33 @@
   
   // document.querySelectorAll(".demo").forEach((d) => setUpDemo(d));
   
+document.addEventListener('DOMContentLoaded', () => {
+  const triggers = document.querySelectorAll('.demo-trigger');
+
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+      const controlledIds = trigger.getAttribute('aria-controls').split(' ');
+
+      trigger.setAttribute('aria-expanded', !isExpanded);
+
+      controlledIds.forEach(id => {
+        const controlledElement = document.getElementById(id);
+        if (controlledElement) {
+          // This handles the container shrinking/expanding
+          controlledElement.classList.toggle('expanded', !isExpanded);
+
+          // This handles the content visibility and animation
+          if (controlledElement.classList.contains('demo-content')) {
+            controlledElement.hidden = isExpanded;
+            if (!isExpanded) {
+              controlledElement.style.maxHeight = '100%';
+            } else {
+              controlledElement.style.maxHeight = '0';
+            }
+          }
+        }
+      });
+    });
+  });
+});

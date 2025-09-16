@@ -15,182 +15,199 @@
     </div>
     <br><br>
     <div id="oncedemo" class="demo">
-      <div class="demoTitle">
-        <div>
-          <h1 id="typeTitle">ONCE</h1>
-          <p>The box below animates when the box within the scroll container comes fully into view.
-            The animation runs the first "enter" occasion but does nothing on subsequent ones.
-            To the right is the CSS setting up this scroll-triggered animation:</p>
-        </div>
-        <div class="cssText" id="cssText">
-          <pre>
-                  @keyframes fade-in {
-                      from {
-                        opacity: 0.1;
-                        transform: scaleX(0.1);
-                        background-color: black;
-                      }
-                    
-                      to {
-                        background-color: black;
-                        transform: scaleX(3);
-                      }
-                  }
-                  .source {
-                    timeline-trigger: --oncetrigger view() contain 0% contain 100%;
-                  }
-                  .target {
-                    animation: fade-in .5s both;
-                    animation-trigger: trigger(--oncetrigger, enter play-once);
-                  }
-              </pre>
-        </div>
-      </div>
-      <div id="stage" class="stage">
-        <div id="target" class="oncetarget target"></div>
-        <div id="scroller" class="scroller">
-          <div class="space"></div>
-          <div class="space"></div>
-          <div id="targetborder">
-            <div id="subject" class="oncesubject subject"></div>
+      <button class="demo-trigger" aria-expanded="false" aria-controls="demo-content-1 oncedemo">
+        ONCE
+      </button>
+      <div id="demo-content-1" class="demo-content" hidden>
+        <div class="demoTitle">
+          <div>
+            <p>The box below animates when the box within the scroll container comes fully into view.
+              The animation runs the first "enter" occasion but does nothing on subsequent ones.
+              To the right is the CSS setting up this scroll-triggered animation:</p>
           </div>
-          <div class="space"></div>
-          <div class="space"></div>
+          <div class="cssText" id="cssText">
+            <pre>
+                    @keyframes fade-in {
+                        from {
+                          opacity: 0.1;
+                          transform: scaleX(0.1);
+                          background-color: black;
+                        }
+                      
+                        to {
+                          background-color: black;
+                          transform: scaleX(3);
+                        }
+                    }
+                    .source {
+                      timeline-trigger: --oncetrigger view() contain 0% contain 100%;
+                    }
+                    .target {
+                      animation: fade-in .5s both;
+                      animation-trigger: trigger(--oncetrigger, enter play-once);
+                    }
+                </pre>
+          </div>
+        </div>
+        <div id="stage" class="stage">
+          <div id="target" class="oncetarget target"></div>
+          <div id="scroller" class="scroller">
+            <div class="space"></div>
+            <div class="space"></div>
+            <div id="targetborder">
+              <div id="subject" class="oncesubject subject"></div>
+            </div>
+            <div class="space"></div>
+            <div class="space"></div>
+          </div>
         </div>
       </div>
     </div>
     <br> <br>
     <div id="repeatdemo" class="demo">
-      <div class="demoTitle">
-        <div>
-          <h1 id="typeTitle">REPEAT</h1>
-          <p>The animation plays forward on each occurrence of "enter" and is reset to current time
-            zero on each occurrence of "exit".</p>
-        </div>
-        <div class="cssText" id="cssText">
-          <pre>
-                  @keyframes fade-in {
-                      from {
-                        opacity: 0.1;
-                        transform: scaleX(0.1);
-                        background-color: black;
-                      }
-                    
-                      to {
-                        background-color: black;
-                        transform: scaleX(3);
-                      }
-                  }
-                  .source {
-                    timeline-trigger: --repeattrigger view() contain 0% contain 100% cover 0% cover 100%;
-                  }
-                  .target {
-                    animation: fade-in .5s both;
-                    animation-trigger: trigger(--repeattrigger, enter play, exit reset);
-                  }
-              </pre>
-        </div>
-      </div>
-      <div id="stage" class="stage">
-        <div id="target" class="repeattarget target"></div>
-        <div id="scroller" class="scroller">
-          <div class="space"></div>
-          <div class="space"></div>
-          <div id="targetborder">
-            <div id="subject" class="repeatsubject subject"></div>
+      <button class="demo-trigger" aria-expanded="false" aria-controls="demo-content-2 repeatdemo">
+        REPEAT
+      </button>
+      <div id="demo-content-2" class="demo-content" hidden>
+        <div class="demoTitle">
+          <div>
+            <p>The animation plays forward on each occurrence of "enter" and is reset to current time
+              zero on each occurrence of "exit".</p>
           </div>
-          <div class="space"></div>
-          <div class="space"></div>
+          <div class="cssText" id="cssText">
+            <pre>
+                    @keyframes fade-in {
+                        from {
+                          opacity: 0.1;
+                          transform: scaleX(0.1);
+                          background-color: black;
+                        }
+                      
+                        to {
+                          background-color: black;
+                          transform: scaleX(3);
+                        }
+                    }
+                    .source {
+                      timeline-trigger: --repeattrigger view() contain 0% contain 100% cover 0% cover 100%;
+                    }
+                    .target {
+                      animation: fade-in .5s both;
+                      animation-trigger: trigger(--repeattrigger, enter play, exit reset);
+                    }
+                </pre>
+          </div>
+        </div>
+        <div id="stage" class="stage">
+          <div id="target" class="repeattarget target"></div>
+          <div id="scroller" class="scroller">
+            <div class="space"></div>
+            <div class="space"></div>
+            <div id="targetborder">
+              <div id="subject" class="repeatsubject subject"></div>
+            </div>
+            <div class="space"></div>
+            <div class="space"></div>
+          </div>
         </div>
       </div>
     </div>
     <br> <br>
     <div id="alternatedemo" class="demo">
-      <div class="demoTitle">
-        <div>
-          <h1 id="typeTitle">ALTERNATE</h1>
-          <p>The animation plays forward on each occurrence of "enter" and plays in reverse
-            on each occurrence of "exit".</p>
-        </div>
-        <div class="cssText" id="cssText">
-          <pre>
-                  @keyframes fade-in {
-                      from {
-                        opacity: 0.1;
-                        transform: scaleX(0.1);
-                        background-color: black;
-                      }
-                    
-                      to {
-                        background-color: black;
-                        transform: scaleX(3);
-                      }
-                  }
-                  .source {
-                    timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
-                  }
-                  .target {
-                    animation: fade-in .5s both;
-                    animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
-                  }
-              </pre>
-        </div>
-      </div>
-      <div id="stage" class="stage">
-        <div id="target" class="alternatetarget target"></div>
-        <div id="scroller" class="scroller">
-          <div class="space"></div>
-          <div class="space"></div>
-          <div id="targetborder">
-            <div id="subject" class="alternatesubject subject"></div>
+      <button class="demo-trigger" aria-expanded="false" aria-controls="demo-content-3 alternatedemo">
+        ALTERNATE
+      </button>
+      <div id="demo-content-3" class="demo-content" hidden>
+        <div class="demoTitle">
+          <div>
+            <p>The animation plays forward on each occurrence of "enter" and plays in reverse
+              on each occurrence of "exit".</p>
           </div>
-          <div class="space"></div>
-          <div class="space"></div>
+          <div class="cssText" id="cssText">
+            <pre>
+                    @keyframes fade-in {
+                        from {
+                          opacity: 0.1;
+                          transform: scaleX(0.1);
+                          background-color: black;
+                        }
+                      
+                        to {
+                          background-color: black;
+                          transform: scaleX(3);
+                        }
+                    }
+                    .source {
+                      timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
+                    }
+                    .target {
+                      animation: fade-in .5s both;
+                      animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
+                    }
+                </pre>
+          </div>
+        </div>
+        <div id="stage" class="stage">
+          <div id="target" class="alternatetarget target"></div>
+          <div id="scroller" class="scroller">
+            <div class="space"></div>
+            <div class="space"></div>
+            <div id="targetborder">
+              <div id="subject" class="alternatesubject subject"></div>
+            </div>
+            <div class="space"></div>
+            <div class="space"></div>
+          </div>
         </div>
       </div>
     </div>
     <br><br>
     <div id="statedemo" class="demo">
-      <div class="demoTitle">
-        <div>
-          <h1 id="typeTitle">STATE</h1>
-          <p>The box below animates when the box within the scroll container comes fully into view.
-            To the right is the CSS setting up this scroll-triggered animation:</p>
-        </div>
-        <div class="cssText" id="cssText">
-          <pre>
-                  @keyframes fade-in {
-                      from {
-                        opacity: 0.1;
-                        transform: scaleX(0.1);
-                        background-color: black;
-                      }
-                    
-                      to {
-                        background-color: black;
-                        transform: scaleX(3);
-                      }
-                  }
-                  .source {
-                    timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
-                  }
-                  .target {
-                    animation: fade-in 10s both;
-                    animation-trigger: trigger(--alternatetrigger, enter play, exit pause);
-                  }
-              </pre>
-        </div>
-      </div>
-      <div id="stage" class="stage">
-        <div id="target" class="statetarget target"></div>
-        <div id="scroller" class="scroller">
-          <div class="space"></div>
-          <div class="space"></div>
-          <div id="targetborder">
-            <div id="subject" class="statesubject subject"></div>
+      <button class="demo-trigger" aria-expanded="false" aria-controls="demo-content-4 statedemo">
+        STATE
+      </button>
+      <div id="demo-content-4" class="demo-content" hidden>
+        <div class="demoTitle">
+          <div>
+            <p>The animation plays forward on each occurrence of "enter" and pauses
+              on each occurrence of "exit". (animation-duration (10s) is extended in this demo
+              to meake it a bit easier to interact with)</p>
           </div>
-          <div class="space"></div>
-          <div class="space"></div>
+          <div class="cssText" id="cssText">
+            <pre>
+                    @keyframes fade-in {
+                        from {
+                          opacity: 0.1;
+                          transform: scaleX(0.1);
+                          background-color: black;
+                        }
+                      
+                        to {
+                          background-color: black;
+                          transform: scaleX(3);
+                        }
+                    }
+                    .source {
+                      timeline-trigger: --alternatetrigger view() contain 0% contain 100%;
+                    }
+                    .target {
+                      animation: fade-in 10s both;
+                      animation-trigger: trigger(--alternatetrigger, enter play, exit pause);
+                    }
+                </pre>
+          </div>
+        </div>
+        <div id="stage" class="stage">
+          <div id="target" class="statetarget target"></div>
+          <div id="scroller" class="scroller">
+            <div class="space"></div>
+            <div class="space"></div>
+            <div id="targetborder">
+              <div id="subject" class="statesubject subject"></div>
+            </div>
+            <div class="space"></div>
+            <div class="space"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -199,8 +216,8 @@
 
   <br>
 
-  <div style="justify-self: center">The example below involves animating images into view as their
-    associated sections are scrolled into view</div>
+  <div style="justify-self: center">The example below uses the "alternate" behavior to animate
+    images into view as their associated sections are scrolled into view</div>
 
   <br>
 
