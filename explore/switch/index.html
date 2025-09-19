@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+  <div id="demos">
+    <div style="justify-self: center; width: 80%;">
+      <p>
+        This demo lets you set the behavior of the scroll-based animation trigger to one of 4
+        categories of animation trigger behaviors commonly exhibited by scroll-triggered animations
+        on the web: "once", "repeat", "alternate", & "state."
+      </p>
+    </div>
+    <br>
+    <div id="oncedemo" class="demo">
+      <div class="demoTitle">
+        <div>
+          Select high-level behavior
+          <input type="radio" id="behavior_once" name="behavior_selection">
+          <label for="behavior_once">once</label>
+          <input type="radio" id="behavior_repeat" name="behavior_selection">
+          <label for="behavior_repeat">repeat</label>
+          <input type="radio" id="behavior_alternate" name="behavior_selection">
+          <label for="behavior_alternate">alternate</label>
+          <input type="radio" id="behavior_state" name="behavior_selection">
+          <label for="behavior_state">state</label>
+        </div>
+        <h2 id="typeTitle"></h2>
+        <div>
+          <p id="typeDescription">
+            The box to the right animates when the box within the scroll container comes fully into
+            view. The animation runs the first "enter" occasion but does nothing on subsequent ones.
+          </p>
+          <p>Below is the CSS setting up this scroll-triggered animation:</p>
+        </div>
+        <div id="target" class="once target"></div>
+      </div>
+    
+      <div id="stage" class="stage">
+        <div class="cssText" id="cssText"></div>
+        <div id="scroller" class="scroller">
+          <div class="space"></div>
+          <div class="space"></div>
+          <div id="targetborder">
+            <div id="subject" class="subject"></div>
+          </div>
+          <div class="space"></div>
+          <div class="space"></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  <br>
+<div style="justify-self: center">
+  <div>The example below uses the "alternate" pattern to animate
+    images into view as their associated sections are scrolled into view.
+  </div>
+  <div>
+    The opacity animations on the images are 1:1 with the triggers on each
+    section.
+  </div>
+  <div>
+    However, there is only one box-shadow animation - it is acted on by all the
+    triggers.
+  </div>
+</div>
+</div>
+  <script src="./index.js"></script>
+</body>
+
+</html>

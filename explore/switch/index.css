@@ -1,0 +1,275 @@
+.stage {
+  width: 100%;
+  height: 48%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.scroller {
+  overflow-y: scroll;
+  border: solid 1px;
+  justify-self: center;
+  height: 50%;
+  width: 50%;
+  display: inline-block;
+}
+
+.space {
+  height: 300px;
+  width: 90%;
+  justify-self: center;
+}
+
+.cssText {
+    height: 90%;
+    width: 100%;
+    border: solid 5px black;
+    padding: 0px;
+    background-color: lightgrey;
+    align-content: center;
+    text-align: left;
+}
+
+.demoTitle {
+    height: 30%;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0.1;
+    transform: scale(0.5, 1);
+    background-color: black;
+  }
+
+  to {
+    background-color: black;
+    transform: scale(3, 1);
+  }
+}
+
+.target {
+  background-color: blue;
+  height: 100px;
+  width: 100px;
+  animation: fade-in .5s both;
+  display: inline-block;
+  justify-self: center;
+  align-self: center;
+  animation-trigger: trigger(--viewtrigger, enter play-once);
+}
+
+#targetborder {
+  border: solid 1px;
+}
+
+.subject {
+  height: 100px;
+  width: 100%;  
+  background-color: black;
+  timeline-trigger: --viewtrigger view() contain 0% contain 100%;
+}
+
+.once {
+  animation-trigger: trigger(--viewtrigger, enter play-once);
+}
+.repeat {
+  animation-trigger: trigger(--viewtrigger, enter play, exit reset);
+}
+.alternate {
+  animation-trigger: trigger(--viewtrigger, enter play-forwards, exit play-backwards);
+}
+.state {
+  animation-trigger: trigger(--viewtrigger, enter play, exit pause);
+}
+
+.demo, .practicaldemo {
+  height: 90vh;
+  width: 90vw;
+  border: solid 1px black;
+  padding: 20px;
+  position: relative;
+  justify-self: center;
+}
+
+@keyframes show {
+	to {
+		opacity: 1;
+	}
+}
+
+
+@keyframes boxshadowswell {
+  0% { box-shadow: 5px 5px 5px 5px gray; }
+  50% { box-shadow: 7px 10px 10px 7px gray; }
+  100% { box-shadow: 5px 5px 5px 5px gray; }
+}
+
+/* Fade-in/fade-out image demo below. */
+.practicaldemo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  &> .scroller {
+    align-self: center;
+  }
+  &> .subject {
+    color: white;
+  }
+
+  #showbox {
+    align-self: center;
+    height: 80%;
+    width: 90%;
+    display: grid;
+    position: relative;
+    animation: boxshadowswell .5s linear both;
+    animation-trigger: trigger(--viewtrigger1, enter play)
+                       trigger(--viewtrigger2, enter play)
+                       trigger(--viewtrigger3, enter play)
+                       trigger(--viewtrigger4, enter play)
+                       trigger(--viewtrigger5, enter play)
+                       trigger(--viewtrigger6, enter play);
+  }
+  #showbox .target {
+    align-self: center;
+    justify-self: center;
+    animation: show .25s both;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  #showbox #target1 {
+    animation-trigger: trigger(--viewtrigger1, enter play-forwards, exit play-backwards);
+  }
+
+  #showbox #target2 {
+    animation-trigger: trigger(--viewtrigger2, enter play-forwards, exit play-backwards);
+  }
+
+  #showbox #target3 {
+    animation-trigger: trigger(--viewtrigger3, enter play-forwards, exit play-backwards);
+  }
+
+  #showbox #target4 {
+    animation-trigger: trigger(--viewtrigger4, enter play-forwards, exit play-backwards);
+  }
+
+  #showbox #target5 {
+    animation-trigger: trigger(--viewtrigger5, enter play-forwards, exit play-backwards);
+  }
+
+  #showbox #target6 {
+    animation-trigger: trigger(--viewtrigger6, enter play-forwards, exit play-backwards);
+  }
+
+  #subject1 {
+    timeline-trigger: --viewtrigger1 view() contain 0% contain 100%;
+  }
+
+  #subject2 {
+    timeline-trigger: --viewtrigger2 view() contain 0% contain 100%;
+  }
+
+  #subject3 {
+    timeline-trigger: --viewtrigger3 view() contain 0% contain 100%;
+  }
+
+  #subject4 {
+    timeline-trigger: --viewtrigger4 view() contain 0% contain 100%;
+  }
+
+  #subject5 {
+    timeline-trigger: --viewtrigger5 view() contain 0% contain 100%;
+  }
+
+  #subject6 {
+    timeline-trigger: --viewtrigger6 view() contain 0% contain 100%;
+  }
+}
+
+/* Accordion functionality. "Trigger" here is entirely unrelated. */
+/* Credit: Gemini.                                                */
+
+/*Style for the clickable trigger button*/
+/*.demo-trigger {*/
+/*  /* Basic styling */*/
+/*  width: 100%;*/
+/*  padding: 15px;*/
+/*  font-size: 16px;*/
+/*  text-align: left;*/
+/*  background-color: #f1f1f1;*/
+/*  border: none;*/
+/*  cursor: pointer;*/
+/*  outline: none;*/
+/*  transition: background-color 0.2s ease;*/
+/*}*/
+/**/
+/*.demo-trigger:hover {*/
+/*  background-color: #ddd;*/
+/*}*/
+/**/
+/*/* Arrow icon for the trigger button */*/
+/*.demo-trigger::after {*/
+/*  content: '';*/
+/*  float: right;*/
+/*  margin-left: 1em;*/
+/*  width: 0;*/
+/*  height: 0;*/
+/*  border-left: 6px solid transparent;*/
+/*  border-right: 6px solid transparent;*/
+/*  border-top: 6px solid #333; /* Right arrow */*/
+/*  transform: rotate(-90deg);*/
+/*  transition: transform 0.2s ease;*/
+/*}*/
+/**/
+/*/* Rotate the arrow when the button is expanded */*/
+/*.demo-trigger[aria-expanded="true"]::after {*/
+/*  transform: rotate(0deg); /* Down arrow */*/
+/*}*/
+/**/
+/*/* The content panel */*/
+/*.demo-content {*/
+/*  padding: 0 18px;*/
+/*  overflow: hidden;*/
+/*  background-color: white;*/
+/*  /* Smooth transition for expanding/collapsing */*/
+/*  transition: max-height 0.3s ease-out;*/
+/*  max-height: 0; /* This is key for the animation */*/
+/*}*/
+/**/
+/*#oncedemo,*/
+/*#repeatdemo,*/
+/*#alternatedemo,*/
+/*#statedemo {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  height: 5vh; /* Default collapsed height */*/
+/*  transition: height 0.3s ease-out; /* Animate the height change */*/
+/*}*/
+/**/
+/*#oncedemo.expanded,*/
+/*#repeatdemo.expanded,*/
+/*#alternatedemo.expanded,*/
+/*#statedemo.expanded {*/
+/*  height: 90vh; /* Expanded height */*/
+/*}*/
+/**/
+/*#oncedemo .demo-content,*/
+/*#repeatdemo .demo-content,*/
+/*#alternatedemo .demo-content,*/
+/*#statedemo .demo-content {*/
+/*  flex: 1;*/
+/*  min-height: 0;*/
+/*}*/
