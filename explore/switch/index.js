@@ -28,6 +28,14 @@ const TYPE_TO_TRIGGER = {
   "state": "--viewtrigger view() contain 0% contain 100%",
 };
 
+function fixupCssText(text) {
+  text = text.replaceAll("enter", "");
+  text = text.replaceAll("exit", "");
+  text = text.replaceAll(",", "");
+  text = text.trim();
+  return text;
+}
+
 function trigger_type_change(target, trigger_type, demo, force = false) {
   const before = getComputedStyle(target).animationTrigger;
   ["alternate", "repeat", "once", "state"].forEach((type) => {
@@ -67,7 +75,7 @@ function trigger_type_change(target, trigger_type, demo, force = false) {
     }
     .target {
       animation: ${animation};
-      animation-trigger: ${after};
+      animation-trigger: ${fixupCssText(after)};
     }
 </pre>`;
 
