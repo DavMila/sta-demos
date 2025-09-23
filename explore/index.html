@@ -49,7 +49,7 @@
     }
     .target {
       animation: fade-in .5s both;
-      animation-trigger: trigger(--oncetrigger, enter play-once);
+      animation-trigger: trigger(--oncetrigger, play-once);
     }
                       </pre>
         </div>
@@ -99,7 +99,7 @@
   }
   .target {
     animation: fade-in .5s both;
-    animation-trigger: trigger(--repeattrigger, enter play, exit reset);
+    animation-trigger: trigger(--repeattrigger, play reset);
   }
                 </pre>
           </div>
@@ -148,7 +148,7 @@
  }
  .target {
    animation: fade-in .5s both;
-   animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
+   animation-trigger: trigger(--alternatetrigger, play-forwards play-backwards);
  }
                 </pre>
           </div>
@@ -198,7 +198,7 @@
     }
     .target {
       animation: fade-in 10s both;
-      animation-trigger: trigger(--alternatetrigger, enter play, exit pause);
+      animation-trigger: trigger(--alternatetrigger, play pause);
     }
                 </pre>
           </div>
