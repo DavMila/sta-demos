@@ -79,7 +79,7 @@
 }
 
 .oncetarget {
-  animation-trigger: trigger(--oncetrigger, enter play-once);
+  animation-trigger: --oncetrigger play-once;
 }
 
 /* REPEAT */
@@ -88,7 +88,7 @@
 }
 
 .repeattarget {
-  animation-trigger: trigger(--repeattrigger, enter play, exit reset);
+  animation-trigger: --repeattrigger play reset;
 }
 
 /* ALTERNATE */
@@ -97,7 +97,7 @@
 }
 
 .alternatetarget {
-  animation-trigger: trigger(--alternatetrigger, enter play-forwards, exit play-backwards);
+  animation-trigger: --alternatetrigger play-forwards play-backwards;
 }
 
 /* STATE */
@@ -108,7 +108,7 @@
 .statetarget {
   /* Make very slow for playing around with. */
   animation: fade-in 10s both;
-  animation-trigger: trigger(--statetrigger, enter play, exit pause);
+  animation-trigger: --statetrigger play pause;
 }
 
 .demo, .practicaldemo {
@@ -152,12 +152,12 @@
     display: grid;
     position: relative;
     animation: boxshadowswell .5s linear both;
-    animation-trigger: trigger(--viewtrigger1, enter play)
-                       trigger(--viewtrigger2, enter play)
-                       trigger(--viewtrigger3, enter play)
-                       trigger(--viewtrigger4, enter play)
-                       trigger(--viewtrigger5, enter play)
-                       trigger(--viewtrigger6, enter play);
+    animation-trigger: --viewtrigger1 play
+                       --viewtrigger2 play
+                       --viewtrigger3 play
+                       --viewtrigger4 play
+                       --viewtrigger5 play
+                       --viewtrigger6 play;
   }
   #showbox .target {
     align-self: center;
@@ -174,27 +174,27 @@
   }
 
   #showbox #target1 {
-    animation-trigger: trigger(--viewtrigger1, enter play-forwards, exit play-backwards);
+    animation-trigger: --viewtrigger1 play-forwards play-backwards;
   }
 
   #showbox #target2 {
-    animation-trigger: trigger(--viewtrigger2, enter play-forwards, exit play-backwards);
+    animation-trigger: --viewtrigger2 play-forwards play-backwards;
   }
 
   #showbox #target3 {
-    animation-trigger: trigger(--viewtrigger3, enter play-forwards, exit play-backwards);
+    animation-trigger: --viewtrigger3 play-forwards play-backwards;
   }
 
   #showbox #target4 {
-    animation-trigger: trigger(--viewtrigger4, enter play-forwards, exit play-backwards);
+    animation-trigger: --viewtrigger4 play-forwards play-backwards;
   }
 
   #showbox #target5 {
-    animation-trigger: trigger(--viewtrigger5, enter play-forwards, exit play-backwards);
+    animation-trigger: --viewtrigger5 play-forwards play-backwards;
   }
 
   #showbox #target6 {
-    animation-trigger: trigger(--viewtrigger6, enter play-forwards, exit play-backwards);
+    animation-trigger: --viewtrigger6 play-forwards play-backwards;
   }
 
   #subject1 {
