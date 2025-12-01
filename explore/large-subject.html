@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+  <style>
+    @keyframes expandX {
+      from {transform: scaleX(1);}
+      to {transform: scaleX(5);}
+    }
+    #target {
+      animation: expandX 1s linear both;
+      animation-trigger: --trigger play-forwards play-backwards;
+      width: 100px;
+      height: 100px;
+      background-color: purple;
+      position: absolute;
+      justify-self: center;
+    }
+    #subject {
+      timeline-trigger: --trigger view() entry 100% exit 0%;
+      width: 100px;
+      height: 200%;
+      background-color: orange;
+    }
+    #scroller {
+      width: 200px;
+      height: 200px;
+      overflow-y: scroll;
+      border: solid 1px;
+    }
+    #space {
+      width: 50%;
+      height: 100%;
+      background-color: blue;
+    }
+    .cssText {
+    height: 90%;
+    width: 100%;
+    border: solid 5px black;
+    padding: 0px;
+    background-color: lightgrey;
+    align-content: center;
+    text-align: left;
+}
+
+  </style>
+   <div class="cssText" id="cssText">
+          <pre>
+    @keyframes expandX {
+      from {transform: scaleX(1);}
+      to {transform: scaleX(5);}
+    }
+    #subject {
+      timeline-trigger: --trigger view() entry 100% exit 0%;
+      height: 200%;
+    }
+    #target {
+      animation: expandX 1s linear both;
+      animation-trigger: --trigger play-forwards play-backwards;
+    }
+                      </pre>
+                      </div>
+  <div id="target">TARGET</div>
+  <div id="scroller">
+    <div id="space"></div>
+    <div id="space"></div>
+    <div id="subject">SUBJECT</div>
+    <div id="space"></div>
+    <div id="space"></div>
+  </div>
+</body>
+</html>
