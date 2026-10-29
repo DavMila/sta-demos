@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event and timeline triggers sharing one name</title>
+<!-- TODO(security): no Content Security Policy, because this page keeps its script and styles inline so it works as a single file. Moving them into files, as the case pages do, would allow a strict script-src 'self'. -->
+<style>
+  :root {
+    --blue: #1a73e8; --green: #1e8e3e; --orange: #e37400; --gray: #80868b;
+    --border: #dadce0; --text: #202124; --muted: #5f6368; --bg: #f8f9fa;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Roboto, Arial, sans-serif; color: var(--text); background: var(--bg); }
+  header { padding: 20px 28px 4px; }
+  h1 { margin: 0 0 6px; font-size: 24px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 0 10px; }
+  h3 { font-size: 15px; margin: 18px 0 8px; }
+  h4 { margin: 0 0 8px; color: var(--text); font-size: 15px; }
+  .sub { margin: 0; color: var(--muted); max-width: 1050px; line-height: 1.45; }
+  code, pre { font-family: 'DejaVu Sans Mono', Menlo, Consolas, monospace; }
+  .top { padding: 14px 28px 10px; }
+  .top-row { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: stretch; }
+  pre.css { margin: 0; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+  /* The Animation setting, next to the CSS it changes */
+  .anim-menu { margin: 0; min-width: 0; padding: 4px 14px 10px; background: #fff; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; }
+  .anim-menu legend { padding: 0 4px; font-weight: 700; }
+  .anim-menu label { display: inline-flex; align-items: center; gap: 5px; margin-right: 16px; line-height: 1.9; cursor: pointer; }
+  .anim-menu input { margin: 0; }
+  .anim-desc { margin: 4px 0 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  button { font: inherit; cursor: pointer; }
+  .small-btn { font-size: 13px; padding: 4px 10px; border: 1px solid var(--border); background: #fff; border-radius: 6px; color: var(--text); }
+  .small-btn:hover { background: #f1f3f4; }
+
+  /* Model options: each menu controls one thing */
+  .controls-wrap { padding: 0 28px 14px; }
+  .controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; gap: 18px; align-items: start; }
+  .control label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+  .control select { width: 100%; font-size: 13px; padding: 5px; }
+  .control .desc { margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .controls .reset { align-self: center; }
+
+  main { display: grid; grid-template-columns: 360px minmax(300px, 1fr) minmax(380px, 1.15fr); gap: 20px; padding: 6px 28px 28px; align-items: start; }
+
+  /* The scrolling page */
+  .scroller-wrap { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 6px; }
+  .scroller { height: 420px; overflow-y: auto; background: #fff; border: 2px solid var(--blue); border-radius: 8px; position: relative; }
+  .gap-menu { position: absolute; top: 8px; right: 20px; margin: 0; padding: 4px 10px 8px; background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 1px 4px rgba(60, 64, 67, 0.18); font-size: 12px; }
+  .gap-menu legend { padding: 0 4px; font-weight: 700; }
+  .gap-menu label { display: flex; align-items: center; gap: 5px; line-height: 1.7; cursor: pointer; }
+  .gap-menu input { margin: 0; }
+  .gap-lead { margin: 0 0 3px; color: var(--muted); line-height: 1.35; }
+  .gap-desc { margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  /* Range lines: the scroll position from top to end, with each section's ranges */
+  .range-track { position: relative; height: 420px; background: #fff; border: 1px solid var(--border); border-radius: 8px; }
+  .range-track .active-range { position: absolute; width: 0; border-left: 2px dashed; }
+  .range-track .activation-range { position: absolute; width: 4px; border-radius: 2px; }
+  .range-track .range-label { position: absolute; top: 2px; font-size: 10px; font-weight: 700; }
+  .range-track .range-marker { position: absolute; left: 0; right: 0; height: 2px; margin-top: -1px; background: var(--text); }
+  .range-legend { margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .c1 { color: #1a73e8; font-weight: 700; }
+  .c2 { color: #9334e6; font-weight: 700; }
+  #section-1 .name, #n-section-1 .name code { color: #1a73e8; }
+  #section-2 .name, #n-section-2 .name code { color: #9334e6; }
+  .spacer { min-height: 460px; padding: 18px 20px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .spacer p { margin: 0 0 10px; }
+  .spacer .hint { color: var(--blue); font-weight: 700; }
+  .section { height: 200px; margin: 0 14px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; }
+  .section-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #e8eaed; font-size: 13px; transition: background .25s; }
+  .section.active .section-head { background: #ceead6; }
+  .section-head .name { font-weight: 700; font-family: 'DejaVu Sans Mono', monospace; }
+  .section-head .vis { color: var(--muted); margin-left: auto; }
+  .section-body { padding: 10px 12px; font-size: 13px; line-height: 1.5; color: #3c4043; }
+  .jumps { margin-top: 8px; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .jumps .small-btn { padding: 3px 8px; font-size: 12px; }
+
+  /* Badges */
+  .badge { display: inline-block; min-width: 66px; text-align: center; font-size: 12px; font-weight: 700; color: #fff; background: var(--gray); border-radius: 999px; padding: 2px 8px; }
+  .badge.on { background: var(--green); }
+  .badge.part { background: #f9ab00; color: var(--text); }
+  .badge.none { background: transparent; color: var(--muted); border: 1px dashed #bdc1c6; font-weight: 500; }
+
+  /* Target */
+  .target-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .target-head .name { font-family: 'DejaVu Sans Mono', monospace; font-weight: 700; }
+  .target-head code { font-size: 12px; color: var(--muted); }
+  .eq { height: 120px; display: flex; align-items: flex-end; justify-content: center; gap: 10px; background: #202124; border-radius: 8px; padding: 14px; }
+  .eq span { width: 22px; height: 100%; background: linear-gradient(to top, #34a853, #fbbc04); border-radius: 4px; transform-origin: bottom; transform: scaleY(0.15); }
+  .anim-status { margin-top: 10px; font-size: 14px; }
+  .runs { margin-top: 4px; font-size: 13px; color: var(--muted); }
+  .buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 14px; }
+  .trigger-btn { text-align: left; background: #fff; border: 2px solid var(--blue); border-radius: 10px; padding: 12px; user-select: none; color: var(--text); }
+  .trigger-btn:hover { background: #e8f0fe; }
+  .trigger-btn:active { transform: translateY(1px); }
+  .trigger-btn .t { display: block; font-weight: 700; font-size: 16px; color: var(--blue); }
+  .trigger-btn code { display: block; font-size: 12px; margin: 3px 0; }
+  .trigger-btn .h { display: block; font-size: 12px; color: var(--muted); line-height: 1.4; margin-top: 4px; }
+  .note { font-size: 12px; color: var(--muted); margin: 8px 0 0; line-height: 1.4; }
+  .try ol { margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.55; }
+  .try li { margin-bottom: 4px; }
+  .try ul { margin: 4px 0 0; padding-left: 18px; }
+
+  /* Model tree */
+  .tree { display: flex; flex-direction: column; gap: 6px; }
+  .node { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+  .node[hidden] { display: none; }
+  .node .name { font-weight: 700; font-size: 14px; }
+  .node .kind { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .node .right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .node .vis { font-size: 12px; color: var(--muted); }
+  .node.l1 { margin-left: 26px; }
+  .node.l2 { margin-left: 52px; }
+  .node.instance { border: 2px solid var(--blue); background: #e8f0fe; }
+  .node.ctt { border: 2px solid #12b5cb; background: #e0f7fa; }
+  .flow-note { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+  @keyframes f-send { from { box-shadow: 0 0 0 4px #fbbc04; } to { box-shadow: 0 0 0 0 rgba(251,188,4,0); } }
+  @keyframes f-on { from { box-shadow: 0 0 0 5px #34a853; } to { box-shadow: 0 0 0 0 rgba(52,168,83,0); } }
+  @keyframes f-off { from { box-shadow: 0 0 0 5px #e37400; } to { box-shadow: 0 0 0 0 rgba(227,116,0,0); } }
+  @keyframes f-ign { from { box-shadow: 0 0 0 4px #9aa0a6; } to { box-shadow: 0 0 0 0 rgba(154,160,166,0); } }
+  .node.f-send { animation: f-send 1s ease-out; }
+  .node.f-on { animation: f-on 1.2s ease-out; }
+  .node.f-off { animation: f-off 1.2s ease-out; }
+  .node.f-ign { animation: f-ign 1s ease-out; }
+
+  /* Log */
+  .log { margin: 0; max-height: 300px; overflow-y: auto; font-size: 13px; line-height: 1.45; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px 10px 34px; }
+  .log li { margin-bottom: 6px; }
+  .log li.on { color: #137333; }
+  .log li.off { color: #b06000; }
+  .log li.ign { color: var(--muted); }
+  .log li.empty { list-style: none; margin-left: -20px; color: var(--muted); }
+  @media (max-width: 1200px) {
+    main { grid-template-columns: 1fr; }
+    .controls { grid-template-columns: 1fr 1fr; }
+    .top-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Event and timeline triggers sharing one name</h1>
+  <p class="sub">Every trigger on this page is named <code>--t</code>. The equalizer follows one shared state, held by the trigger instance. Scroll the page on the left, press the buttons, and watch the model on the right. The Animation setting switches between a looping and a short animation, each with ranges that suit it. Each menu below it changes one part of the model.</p>
+</header>
+
+<section class="top">
+  <div class="top-row">
+<pre class="css"><code data-anim="bounce">#section-1, #section-2 { timeline-trigger: --t view() contain / cover; }
+#play-button { event-trigger: --t click / dblclick; }
+#toggle      { event-trigger: --t click / click; }
+#replay      { event-trigger: --t click; }
+#equalizer   { animation: bounce 0.5s infinite alternate;
+               animation-trigger: --t play pause; }</code><code data-anim="bump" hidden>#section-1, #section-2 { timeline-trigger: --t view() cover 40% cover 60%; }
+#play-button { event-trigger: --t click / dblclick; }
+#toggle      { event-trigger: --t click / click; }
+#replay      { event-trigger: --t click; }
+#equalizer   { animation: bump 0.4s;
+               animation-trigger: --t replay; }</code></pre>
+    <fieldset class="anim-menu">
+      <legend>Animation</legend>
+      <label><input type="radio" name="anim" value="bounce" checked> Bounce (loops)</label>
+      <label><input type="radio" name="anim" value="bump"> Bump (short)</label>
+      <p id="anim-desc" class="anim-desc"></p>
+    </fieldset>
+  </div>
+</section>
+
+<section class="controls-wrap" aria-label="Model options">
+  <div class="panel controls">
+    <div class="control">
+      <label for="opt-event-state">Event trigger state</label>
+      <select id="opt-event-state">
+        <option value="none">No state: the instance decides</option>
+        <option value="own">Own state: each button tracks its own</option>
+      </select>
+      <p class="desc" id="desc-event-state"></p>
+    </div>
+    <div class="control">
+      <label for="opt-combine">Timeline triggers with the same name</label>
+      <select id="opt-combine">
+        <option value="or">Combined with OR</option>
+        <option value="each">Each signals on its own</option>
+      </select>
+      <p class="desc" id="desc-combine"></p>
+    </div>
+    <div class="control">
+      <label for="opt-exit">Timeline exit</label>
+      <select id="opt-exit">
+        <option value="unpaired">Without an entry</option>
+        <option value="paired">Only after an entry</option>
+      </select>
+      <p class="desc" id="desc-exit"></p>
+    </div>
+    <div class="control">
+      <label for="opt-no-exit">Event triggers with no exit events</label>
+      <select id="opt-no-exit">
+        <option value="always">Always run the entry action</option>
+        <option value="gated">Ignored while active</option>
+      </select>
+      <p class="desc" id="desc-no-exit"></p>
+    </div>
+    <button id="reset" class="small-btn reset">Reset</button>
+  </div>
+</section>
+
+<main>
+  <div>
+    <h2>The page</h2>
+    <div class="scroller-wrap">
+      <div class="range-track" id="range-track" aria-hidden="true"></div>
+      <div id="scroller" class="scroller">
+        <div class="spacer">
+          <h4>Album notes</h4>
+          <p data-anim="bounce">This box stands in for an article. Below it are two track sections. Each one is a timeline trigger named <code>--t</code>, with <code>contain</code> as its activation range and <code>cover</code> as its active range.</p>
+          <p data-anim="bump" hidden>This box stands in for an article. Below it are two track sections. Each one is a timeline trigger named <code>--t</code>. Its activation range is <code>cover 40%</code> to <code>cover 60%</code>, roughly when the section is in the middle of the view, and its active range is the same.</p>
+          <p>The equalizer is the animation they control. The three buttons are event triggers with the same name.</p>
+          <p class="hint">Scroll down ↓</p>
+        </div>
+        <article class="section" id="section-1">
+          <div class="section-head"><span class="name">#section-1</span><span class="badge">inactive</span><span class="vis">out of view</span></div>
+          <div class="section-body"><strong>Track 1: Opening.</strong> A slow build with a bright synth line.</div>
+        </article>
+        <div id="gap"></div>
+        <article class="section" id="section-2">
+          <div class="section-head"><span class="name">#section-2</span><span class="badge">inactive</span><span class="vis">out of view</span></div>
+          <div class="section-body"><strong>Track 2: Interlude.</strong> A quieter piece.<span data-anim="bounce"> The menu in the corner sets how close it is to the first section.</span></div>
+        </article>
+        <div class="spacer">
+          <p>That's the end of the track notes. Scroll back up to bring the sections into view again.</p>
+        </div>
+      </div>
+      <fieldset class="gap-menu" data-anim="bounce">
+        <legend>Gap between sections</legend>
+        <p class="gap-lead">When section 1 leaves,<br>section 2 is…</p>
+        <label><input type="radio" name="gap" value="overlap" checked> already fully in view</label>
+        <label><input type="radio" name="gap" value="touch"> becoming fully in view</label>
+        <label><input type="radio" name="gap" value="close"> partly in view</label>
+        <label><input type="radio" name="gap" value="apart"> out of view</label>
+      </fieldset>
+    </div>
+    <div class="jumps">Jump:
+      <button class="small-btn" data-jump="top">Top</button>
+      <button class="small-btn" data-jump="s1partly">Section 1 partly</button>
+      <button class="small-btn" data-jump="s1">Section 1</button>
+      <button class="small-btn" data-jump="between">Between</button>
+      <button class="small-btn" data-jump="s2">Section 2</button>
+      <button class="small-btn" data-jump="end">End</button>
+    </div>
+    <p id="gap-desc" class="gap-desc"></p>
+    <p class="range-legend" data-anim="bounce">The strip on the left is the scroll position, from top to end, with each section's ranges: <span class="c1">section 1</span>, <span class="c2">section 2</span>. A solid line is the activation range (fully in view) and a dashed line is the active range (on screen). The black line is where you are now.</p>
+    <p class="range-legend" data-anim="bump" hidden>The strip on the left is the scroll position, from top to end, with each section's range: <span class="c1">section 1</span>, <span class="c2">section 2</span>. A solid line is the activation range (near the middle). The active range is the same, so there's no dashed line. The black line is where you are now.</p>
+  </div>
+
+  <div>
+    <h2>The animation and the buttons</h2>
+    <div class="panel">
+      <div class="target-head"><span class="name">#equalizer</span><code data-anim="bounce">animation-trigger: --t play pause</code><code data-anim="bump" hidden>animation-trigger: --t replay</code></div>
+      <div id="equalizer" class="eq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="anim-status">Animation: <strong id="anim-status">not started</strong></div>
+      <div class="runs">Entry action runs: <strong id="entry-runs">0</strong> · <span data-anim="bounce">Exit action runs</span><span data-anim="bump" hidden>Deactivations (no exit action)</span>: <strong id="exit-runs">0</strong></div>
+    </div>
+    <div class="buttons">
+      <button id="play-button" class="trigger-btn">
+        <span class="t">Play / Pause</span>
+        <code>#play-button</code>
+        <code>click / dblclick</code>
+        <span class="h">click activates, double-click deactivates</span>
+      </button>
+      <button id="toggle" class="trigger-btn">
+        <span class="t">Toggle</span>
+        <code>#toggle</code>
+        <code>click / click</code>
+        <span class="h">activates or deactivates, whichever fits the state</span>
+      </button>
+      <button id="replay" class="trigger-btn">
+        <span class="t">Replay</span>
+        <code>#replay</code>
+        <code>click</code>
+        <span class="h">no exit events: every click activates</span>
+      </button>
+    </div>
+    <p class="note">A double-click fires two clicks first. While the instance is active those clicks are ignored; from the inactive state they activate it just before the double-click deactivates it.</p>
+    <div class="try">
+      <h3>Try this</h3>
+      <ol data-anim="bounce">
+        <li>Jump to <b>Section 1</b>: it becomes fully visible, so the equalizer plays.</li>
+        <li>Double-click <b>Play / Pause</b>: it pauses, even though section 1 is still on screen.</li>
+        <li>Jump to <b>Top</b>: section 1 leaves. The instance is already inactive, so nothing happens.</li>
+        <li>Click <b>Play / Pause</b>, then jump to <b>Section 2</b>: with the default gap, section 2 is already fully in view when section 1 leaves, so it keeps playing.</li>
+        <li>Jump to <b>End</b>: section 2 leaves too, so it pauses.</li>
+        <li>Press <b>Toggle</b> any time: each click flips the shared state, whichever trigger set it last.</li>
+        <li>Press <b>Replay</b> while it's playing: the entry action runs again, as the counter shows. It's <code>play</code> on a looping animation, so nothing visible changes.</li>
+        <li>Change one menu at a time to compare:
+          <ul>
+            <li><i>Event trigger state → Own state:</i> right after step 1, the first Toggle click does nothing. After step 5, clicking Play / Pause does nothing.</li>
+            <li><i>Timeline triggers → Each signals on its own:</i> in step 4 it pauses as soon as section 1 leaves, although section 2 is on screen.</li>
+            <li><i>Timeline exit → Only after an entry:</i> jump to Section 1 partly, click Play / Pause, then jump to Top. It keeps playing, because section 1 never came fully into view. With Without an entry, it pauses.</li>
+            <li><i>No exit events → Ignored while active:</i> in step 7 the counter doesn't change.</li>
+            <li><i>Gap → out of view:</i> in step 4 it pauses between the sections and plays again at section 2, as separate triggers would.</li>
+            <li><i>Gap → partly in view:</i> in step 4 it keeps playing. With Timeline exit → Only after an entry, it pauses when section 1 leaves and restarts when section 2 is fully in view.</li>
+            <li><i>Gap → becoming fully in view:</i> in step 4 nothing happens at the handover. With Timeline triggers → Each signals on its own, it pauses and restarts in the same frame, which shows in the log and the counters.</li>
+          </ul>
+        </li>
+      </ol>
+      <ol data-anim="bump" hidden>
+        <li>Jump to <b>Section 1</b>: it reaches the middle of the view, so the equalizer bumps once.</li>
+        <li>Jump to <b>Section 2</b>: on the way, section 1 leaves its range, so the instance deactivates (there's no exit action). Section 2 then activates it again, so it bumps again.</li>
+        <li>Scroll a little up and back down: section 2 leaves its range and enters it again, so it bumps again. The active range is no wider than the activation range, so nothing keeps the instance active.</li>
+        <li>Press <b>Replay</b>: the instance is already active, but Replay has no exit events, so it bumps anyway. A click on <b>Play / Pause</b> is ignored, because Play / Pause has exit events.</li>
+        <li>Change one setting at a time to compare:
+          <ul>
+            <li><i>No exit events → Ignored while active:</i> in step 4, Replay does nothing.</li>
+            <li><i>Timeline triggers → Each signals on its own</i> or <i>Timeline exit → Only after an entry:</i> nothing changes, because the two ranges never overlap and each section's active range is its activation range.</li>
+            <li><i>Animation → Bounce:</i> watch Entry action runs as you go from section 1 to section 2. With <code>contain / cover</code>, it only goes up again with Gap → out of view, so with the other gaps a bump would play only once.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div>
+    <h2>The model</h2>
+    <div class="tree">
+      <div class="node instance" id="n-instance">
+        <div><div class="name">Trigger instance <code>--t</code></div><div class="kind">shared state · activate → play · deactivate → pause</div></div>
+        <div class="right"><span class="badge">inactive</span></div>
+      </div>
+      <div class="node l1" id="n-play-button">
+        <div><div class="name"><code>#play-button</code></div><div class="kind">event trigger · click / dblclick</div></div>
+        <div class="right"><span class="badge none">no state</span></div>
+      </div>
+      <div class="node l1" id="n-toggle">
+        <div><div class="name"><code>#toggle</code></div><div class="kind">event trigger · click / click</div></div>
+        <div class="right"><span class="badge none">no state</span></div>
+      </div>
+      <div class="node l1" id="n-replay">
+        <div><div class="name"><code>#replay</code></div><div class="kind">event trigger · click, no exit events</div></div>
+        <div class="right"><span class="badge none">no state</span></div>
+      </div>
+      <div class="node l1 ctt" id="n-ctt">
+        <div><div class="name">Combined timeline trigger</div><div class="kind">logical OR of the sections</div></div>
+        <div class="right"><span class="badge">inactive</span></div>
+      </div>
+      <div class="node l2" id="n-section-1">
+        <div><div class="name"><code>#section-1</code></div><div class="kind">timeline trigger · view() contain / cover</div></div>
+        <div class="right"><span class="vis">out of view</span><span class="badge">inactive</span></div>
+      </div>
+      <div class="node l2" id="n-section-2">
+        <div><div class="name"><code>#section-2</code></div><div class="kind">timeline trigger · view() contain / cover</div></div>
+        <div class="right"><span class="vis">out of view</span><span class="badge">inactive</span></div>
+      </div>
+    </div>
+    <p id="flow-note" class="flow-note"></p>
+    <h3>What happened</h3>
+    <ol id="log" class="log"></ol>
+  </div>
+</main>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const scroller = $('#scroller');
+  const logEl = $('#log');
+  const animStatusEl = $('#anim-status');
+
+  // Each menu controls exactly one part of the model.
+  const MENUS = {
+    eventState: { el: $('#opt-event-state'), desc: $('#desc-event-state'), text: {
+      none: 'Buttons have no state of their own. The instance decides: an event in both sets sends whichever signal fits its state.',
+      own: "Each button with exit events tracks whether it's active, and only signals when that changes.",
+    } },
+    combine: { el: $('#opt-combine'), desc: $('#desc-combine'), text: {
+      or: 'The sections reach the instance as one source, through the combined timeline trigger.',
+      each: 'Each section signals the instance directly.',
+    } },
+    exit: { el: $('#opt-exit'), desc: $('#desc-exit'), text: {
+      unpaired: 'Sections keep no state, so leaving the active range deactivates even without an entry.',
+      paired: 'Sections keep their own state, so a section deactivates only if it activated.',
+    } },
+    noExit: { el: $('#opt-no-exit'), desc: $('#desc-no-exit'), text: {
+      always: 'Each click on Replay runs the entry action, even while the instance is active.',
+      gated: 'A click on Replay is treated like any other activate: ignored while the instance is active.',
+    } },
+  };
+  const opt = {};
+  function readMenus() {
+    for (const [key, menu] of Object.entries(MENUS)) {
+      opt[key] = menu.el.value;
+      menu.desc.textContent = menu.text[opt[key]];
+    }
+  }
+
+  // The Animation setting: what the triggers control, with ranges that suit it.
+  const ANIMS = {
+    bounce: {
+      desc: 'Loops while the instance is active: activate plays it, and deactivate pauses it. Each section\'s activation range is contain and its active range is cover.',
+      entry: 'play',
+      instanceKind: 'shared state · activate → play · deactivate → pause',
+      sectionKind: 'timeline trigger · view() contain / cover',
+    },
+    bump: {
+      desc: "Plays once, briefly: activate replays it, and there's no exit action. Each section's range is a narrow band around the middle of the view, with no wider active range. Between the sections the position leaves every range, so each section bumps.",
+      entry: 'replay',
+      instanceKind: 'shared state · activate → replay · no exit action',
+      sectionKind: 'timeline trigger · view() cover 40% cover 60%',
+    },
+  };
+  const BAND = [0.4, 0.6];  // the bump's activation range, as fractions of cover
+  let anim = 'bounce';
+
+  // Which events are entry and exit events for each event trigger.
+  const EVENT_SETS = {
+    'play-button': { enter: ['click'], exit: ['dblclick'] },
+    'toggle': { enter: ['click'], exit: ['click'] },
+    'replay': { enter: ['click'], exit: [] },
+  };
+
+  const nodes = {
+    instance: $('#n-instance'),
+    ctt: $('#n-ctt'),
+    'play-button': $('#n-play-button'),
+    'toggle': $('#n-toggle'),
+    'replay': $('#n-replay'),
+  };
+  const sections = ['section-1', 'section-2'].map((id) => ({
+    id, el: document.getElementById(id), node: document.getElementById('n-' + id),
+  }));
+
+  function readAnim() {
+    anim = document.querySelector('input[name="anim"]:checked').value;
+    $('#anim-desc').textContent = ANIMS[anim].desc;
+    document.querySelectorAll('[data-anim]').forEach((el) => { el.hidden = el.dataset.anim !== anim; });
+    nodes.instance.querySelector('.kind').textContent = ANIMS[anim].instanceKind;
+    sections.forEach((s) => { s.node.querySelector('.kind').textContent = ANIMS[anim].sectionKind; });
+  }
+
+  // The gap between the sections. Sizes come from the view and section heights so that
+  // each option gives exactly its case.
+  const gapEl = $('#gap');
+  // What each gap looks like on the range strip.
+  const GAP_TEXT = {
+    overlap: "On the strip, section 2's solid line starts before section 1's dashed line ends.",
+    touch: "On the strip, section 2's solid line starts exactly where section 1's dashed line ends.",
+    close: "On the strip, section 2's solid line starts after section 1's dashed line ends, but its dashed line starts before.",
+    apart: "On the strip, section 2's dashed line starts after section 1's dashed line ends.",
+  };
+  const BUMP_GAP_TEXT = "There's no gap setting with Bump: each section's range is narrow, so there's a stretch between them at any gap.";
+  const gapKind = () => document.querySelector('input[name="gap"]:checked').value;
+  function applyGap() {
+    const view = scroller.clientHeight;
+    const h = sections[1].el.offsetHeight;
+    // Bump has no gap setting: every gap behaves the same there, so it uses the default spacing.
+    const kind = anim === 'bump' ? 'overlap' : gapKind();
+    const size = { overlap: 30, touch: view - h, close: view - h + Math.round(h / 2), apart: view + 100 }[kind];
+    gapEl.style.height = `${size}px`;
+    $('#gap-desc').textContent = anim === 'bump' ? BUMP_GAP_TEXT : GAP_TEXT[kind];
+  }
+
+  // Range lines: maps the scroll position (top to end) onto the strip next to the page, using the
+  // same tests as measure(). Bounce: cover is (top - view, bottom), contain is [bottom - view, top].
+  // Bump: the activation range is cover 40% to cover 60%, and the active range is the same.
+  const track = $('#range-track');
+  const COLORS = ['#1a73e8', '#9334e6'];
+  const TRACK_TOP = 20;     // leaves room for the labels above the top of the scale
+  const TRACK_BOTTOM = 8;
+  let marker = null;
+  function trackY(scrollTop) {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    const clamped = Math.min(Math.max(scrollTop, 0), max);
+    return TRACK_TOP + (clamped / max) * (track.clientHeight - TRACK_TOP - TRACK_BOTTOM);
+  }
+  function line(className, x, from, to, color) {
+    const el = document.createElement('span');
+    el.className = className;
+    el.style.left = `${x}px`;
+    el.style.top = `${trackY(from)}px`;
+    el.style.height = `${trackY(to) - trackY(from)}px`;
+    if (className === 'active-range') el.style.borderColor = color; else el.style.background = color;
+    return el;
+  }
+  function drawRanges() {
+    const view = scroller.clientHeight;
+    const parts = [];
+    sections.forEach((s, i) => {
+      const top = s.el.offsetTop;
+      const bottom = top + s.el.offsetHeight;
+      const x = 12 + i * 14;
+      const label = document.createElement('span');
+      label.className = 'range-label';
+      label.textContent = String(i + 1);
+      label.style.left = `${x - 2}px`;
+      label.style.color = COLORS[i];
+      parts.push(label);
+      if (anim === 'bump') {
+        const start = top - view, length = view + s.el.offsetHeight;
+        parts.push(line('activation-range', x - 1, start + BAND[0] * length, start + BAND[1] * length, COLORS[i]));
+      } else {
+        parts.push(
+          line('active-range', x, top - view, bottom, COLORS[i]),
+          line('activation-range', x - 1, Math.min(top, bottom - view), Math.max(top, bottom - view), COLORS[i]));
+      }
+    });
+    marker = document.createElement('span');
+    marker.className = 'range-marker';
+    parts.push(marker);
+    track.replaceChildren(...parts);
+    moveMarker();
+  }
+  function moveMarker() {
+    if (marker) marker.style.top = `${trackY(scroller.scrollTop)}px`;
+  }
+
+  let state;
+  let anims = [];
+
+  // The triggered animation: one keyframe animation per bar, all controlled together.
+  function createAnimation() {
+    anims.forEach((a) => a.cancel());
+    const bars = [...document.querySelectorAll('#equalizer span')];
+    if (anim === 'bump') {
+      // One short beat: every bar jumps up once and falls back.
+      const peaks = [0.75, 0.95, 0.6, 1, 0.7, 0.9, 0.65];
+      anims = bars.map((el, i) => el.animate([
+        { transform: 'scaleY(0.15)', easing: 'ease-out' },
+        { transform: `scaleY(${peaks[i % peaks.length]})`, offset: 0.35, easing: 'ease-in' },
+        { transform: 'scaleY(0.15)' },
+      ], { duration: 400 }));
+      anims[0].onfinish = () => { animStatusEl.textContent = 'finished'; };
+    } else {
+      const durations = [520, 410, 610, 450, 560, 390, 480];
+      anims = bars.map((el, i) =>
+        el.animate([{ transform: 'scaleY(0.15)' }, { transform: 'scaleY(1)' }],
+          { duration: durations[i % durations.length], iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }));
+    }
+    anims.forEach((a) => a.pause());
+    animStatusEl.textContent = 'not started';
+  }
+
+  // The entry and exit actions. Bounce: play and pause. Bump: replay, and no exit action.
+  function runEntry() {
+    if (anim === 'bump') {
+      anims.forEach((a) => { a.currentTime = 0; a.play(); });
+    } else if (anims[0].playState !== 'running') {
+      anims.forEach((a) => a.play());
+    }
+    animStatusEl.textContent = 'playing';
+  }
+  function runExit() {
+    if (anim === 'bump') return;  // no exit action
+    if (anims[0].playState === 'running') anims.forEach((a) => a.pause());
+    animStatusEl.textContent = 'paused';
+  }
+
+  function flash(node, kind) {
+    node.classList.remove('f-send', 'f-on', 'f-off', 'f-ign');
+    void node.offsetWidth;  // restart the CSS animation
+    node.classList.add('f-' + kind);
+  }
+
+  function log(text, cls) {
+    const empty = logEl.querySelector('.empty');
+    if (empty) empty.remove();
+    const li = document.createElement('li');
+    li.textContent = text;
+    li.className = cls;
+    logEl.appendChild(li);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  // The instance applies a signal only if it fits its current state, except that an
+  // activate from a trigger with no exit events can always run the entry action.
+  function instanceReceive(signal, always = false) {
+    const entry = ANIMS[anim].entry;
+    if (signal === 'activate') {
+      if (!state.instance) {
+        state.instance = true; state.entryRuns++; runEntry(); flash(nodes.instance, 'on');
+        return { text: `instance: inactive → active → ${entry}`, cls: 'on' };
+      }
+      if (always) {
+        state.entryRuns++; runEntry(); flash(nodes.instance, 'on');
+        return { text: anim === 'bump'
+          ? 'instance is already active, but the trigger has no exit events, so replay runs anyway and the bump starts over'
+          : "instance is already active, but the trigger has no exit events, so play runs anyway (nothing visible changes while it's playing)", cls: 'on' };
+      }
+      flash(nodes.instance, 'ign');
+      return { text: 'instance is already active → ignored', cls: 'ign' };
+    }
+    if (state.instance) {
+      state.instance = false; state.exitRuns++; runExit(); flash(nodes.instance, 'off');
+      return { text: anim === 'bump' ? 'instance: active → inactive (no exit action)' : 'instance: active → inactive → pause', cls: 'off' };
+    }
+    flash(nodes.instance, 'ign');
+    return { text: 'instance is already inactive → ignored', cls: 'ign' };
+  }
+
+  // Event triggers.
+  function onEvent(src, type) {
+    const sets = EVENT_SETS[src];
+    const isEnter = sets.enter.includes(type);
+    const isExit = sets.exit.includes(type);
+    const what = `${type} on #${src}`;
+    if (sets.exit.length === 0) {
+      // No exit events: there's nothing to track, so every event sends activate.
+      flash(nodes[src], 'send');
+      const r = instanceReceive('activate', opt.noExit === 'always');
+      log(`${what} → sends activate (no exit events) → ${r.text}`, r.cls);
+    } else if (opt.eventState === 'own') {
+      // The event trigger keeps its own state and signals only when that state changes.
+      const own = state.events[src];
+      let signal = null;
+      if (!own && isEnter) { state.events[src] = true; signal = 'activate'; }
+      else if (own && isExit) { state.events[src] = false; signal = 'deactivate'; }
+      if (!signal) {
+        flash(nodes[src], 'ign');
+        log(`${what} → #${src}'s own state is ${own ? 'active' : 'inactive'}, so it sends nothing`, 'ign');
+      } else {
+        flash(nodes[src], 'send');
+        const r = instanceReceive(signal);
+        log(`${what} → #${src}: ${own ? 'active → inactive' : 'inactive → active'} → sends ${signal} → ${r.text}`, r.cls);
+      }
+    } else {
+      // No state of its own: an event in both sets sends whichever signal fits the instance's state.
+      const both = isEnter && isExit;
+      const signal = both ? (state.instance ? 'deactivate' : 'activate') : (isEnter ? 'activate' : 'deactivate');
+      flash(nodes[src], 'send');
+      const r = instanceReceive(signal);
+      log(`${what} → sends ${signal}${both ? ' (whichever fits the instance state)' : ''} → ${r.text}`, r.cls);
+    }
+    render();
+  }
+
+  // Timeline triggers: where each section is relative to its activation and active ranges.
+  function measure(sec) {
+    const H = scroller.clientHeight;
+    const top = sec.el.offsetTop - scroller.scrollTop;
+    const bottom = top + sec.el.offsetHeight;
+    const onScreen = bottom > 0 && top < H;   // inside cover
+    if (anim === 'bump') {
+      // Cover runs from the top edge at the bottom of the view (0%) to the bottom edge at the top (100%).
+      const progress = (H - top) / (H + sec.el.offsetHeight);
+      const inBand = progress >= BAND[0] && progress <= BAND[1];
+      return { inActivation: inBand, inActive: inBand, vis: inBand ? 'near the middle' : onScreen ? 'on screen' : 'out of view' };
+    }
+    const fully = top >= 0 && bottom <= H;   // inside contain
+    return { inActivation: fully, inActive: onScreen, vis: fully ? 'fully in view' : onScreen ? 'partly in view' : 'out of view' };
+  }
+
+  const names = (list) => list.map((s) => '#' + s.id).join(' and ');
+  const many = (list, one, more) => (list.length > 1 ? more : one);
+  // How each animation's ranges describe entering an activation range and leaving an active range.
+  const enteredText = (list) => `${names(list)} ${many(list, 'is', 'are')} ${anim === 'bump' ? 'near the middle' : 'fully in view'}`;
+  const leftText = (list) => (anim === 'bump'
+    ? `${names(list)} ${many(list, 'has', 'have')} left the middle`
+    : `${names(list)} ${many(list, 'is', 'are')} out of view`);
+
+  // Runs once per frame: look at every section first, then decide what to send.
+  function evaluate() {
+    const pos = sections.map((s) => ({ s, m: measure(s) }));
+    pos.forEach(({ s, m }) => { s.vis = m.vis; });
+    if (opt.exit === 'paired') evaluatePaired(pos);
+    else evaluateUnpaired(pos);
+    pos.forEach(({ s, m }) => { s.wasInActivation = m.inActivation; s.wasInActive = m.inActive; });
+    moveMarker();
+    render();
+  }
+
+  // Timeline exit "only after an entry": each section keeps its own state.
+  function evaluatePaired(pos) {
+    const changes = [];
+    for (const { s, m } of pos) {
+      if (!s.latched && m.inActivation) { s.latched = true; changes.push({ s, on: true }); }
+      else if (s.latched && !m.inActive) { s.latched = false; changes.push({ s, on: false }); }
+    }
+    if (!changes.length) return;
+    const desc = (c) => (c.on ? `${enteredText([c.s])} → activates` : `${leftText([c.s])} → deactivates`);
+    changes.forEach((c) => flash(c.s.node, 'send'));
+    if (opt.combine === 'each') {
+      for (const c of changes) {
+        const signal = c.on ? 'activate' : 'deactivate';
+        const r = instanceReceive(signal);
+        log(`${desc(c)} → sends ${signal} → ${r.text}`, r.cls);
+      }
+      return;
+    }
+    const before = state.ctt;
+    const after = sections.some((s) => s.latched);
+    const what = changes.map(desc).join('; ');
+    if (before === after) {
+      flash(nodes.ctt, 'ign');
+      log(`${what} → combined trigger stays active (another section is active) → sends nothing`, 'ign');
+    } else {
+      state.ctt = after;
+      flash(nodes.ctt, 'send');
+      const signal = after ? 'activate' : 'deactivate';
+      const r = instanceReceive(signal);
+      log(`${what} → combined trigger: ${before ? 'active → inactive' : 'inactive → active'} → sends ${signal} → ${r.text}`, r.cls);
+    }
+  }
+
+  // Timeline exit "without an entry": sections keep no state and only report where they are.
+  function evaluateUnpaired(pos) {
+    if (opt.combine === 'each') {
+      // Each section signals on its own: entering its activation range sends activate,
+      // leaving its active range sends deactivate.
+      for (const { s, m } of pos) {
+        if (m.inActivation && !s.wasInActivation) {
+          flash(s.node, 'send');
+          const r = instanceReceive('activate');
+          log(`${enteredText([s])}, entering its activation range → sends activate → ${r.text}`, r.cls);
+        } else if (!m.inActive && s.wasInActive) {
+          flash(s.node, 'send');
+          const r = instanceReceive('deactivate');
+          log(`${leftText([s])}, leaving its active range → sends deactivate → ${r.text}`, r.cls);
+        }
+      }
+      return;
+    }
+    // Combined with OR: compare where the position is relative to the OR of the sections' ranges.
+    const nowActivation = pos.some((p) => p.m.inActivation);
+    const nowActive = pos.some((p) => p.m.inActive);
+    const entered = pos.filter((p) => p.m.inActivation && !p.s.wasInActivation).map((p) => p.s);
+    const left = pos.filter((p) => !p.m.inActive && p.s.wasInActive).map((p) => p.s);
+    const wasActivation = state.inActivation;
+    const wasActive = state.inActive;
+    state.inActivation = nowActivation;
+    state.inActive = nowActive;
+    if (!wasActivation && nowActivation) {
+      entered.forEach((s) => flash(s.node, 'send'));
+      flash(nodes.ctt, 'send');
+      const why = left.length
+        ? `In the same frame, ${names(left)} ${many(left, 'leaves its active range', 'leave their active ranges')} and ${names(entered)} ${many(entered, 'enters its activation range', 'enter their activation ranges')}; ${names(entered)} ${many(entered, 'is in its active range', 'are in their active ranges')}, so there's no deactivate`
+        : `${enteredText(entered)}, so the position enters an activation range`;
+      const r = instanceReceive('activate');
+      log(`${why} → combined trigger sends activate → ${r.text}`, r.cls);
+    } else if (wasActive && !nowActive) {
+      left.forEach((s) => flash(s.node, 'send'));
+      flash(nodes.ctt, 'send');
+      const r = instanceReceive('deactivate');
+      log(`${leftText(left)}, so the position is in no active range → combined trigger sends deactivate → ${r.text}`, r.cls);
+    } else if (left.length && nowActive) {
+      flash(nodes.ctt, 'ign');
+      const still = pos.filter((p) => p.m.inActive).map((p) => p.s);
+      const already = still.every((s) => s.wasInActive);  // false if one just arrived in the same frame
+      const where = already ? many(still, 'is still in its active range', 'are still in their active ranges') : many(still, 'is in its active range', 'are in their active ranges');
+      log(`${leftText(left)}, but ${names(still)} ${where} → combined trigger sends nothing`, 'ign');
+    }
+  }
+
+  function setBadge(el, on, none) {
+    const b = el.querySelector('.badge');
+    if (none) { b.className = 'badge none'; b.textContent = 'no state'; return; }
+    b.className = 'badge' + (on ? ' on' : '');
+    b.textContent = on ? 'active' : 'inactive';
+  }
+
+  function flowNote() {
+    const parts = [opt.combine === 'or'
+      ? 'Signals flow upward: sections → combined trigger → instance, and buttons → instance.'
+      : 'Signals flow upward: each section → instance, and buttons → instance.'];
+    if (opt.exit === 'unpaired') parts.push('The sections only report where they are.');
+    if (opt.eventState === 'own') parts.push('Buttons with exit events also keep their own state.');
+    return parts.join(' ');
+  }
+
+  function render() {
+    const or = opt.combine === 'or';
+    const unpaired = opt.exit === 'unpaired';
+    setBadge(nodes.instance, state.instance);
+    nodes.ctt.hidden = !or;
+    if (unpaired) {
+      // The combined trigger has no state here; show where the position is relative to the OR of the ranges.
+      const b = nodes.ctt.querySelector('.badge');
+      const bump = anim === 'bump';
+      if (state.inActivation) { b.className = 'badge on'; b.textContent = bump ? 'near the middle' : 'fully in view'; }
+      else if (state.inActive) { b.className = 'badge part'; b.textContent = 'partly in view'; }
+      else { b.className = 'badge'; b.textContent = bump ? 'not near the middle' : 'out of view'; }
+    } else {
+      setBadge(nodes.ctt, state.ctt);
+    }
+    nodes.ctt.querySelector('.kind').textContent = unpaired ? "logical OR of the sections' ranges · no state" : 'logical OR of the sections';
+    for (const s of sections) {
+      setBadge(s.node, s.latched, unpaired);
+      s.node.querySelector('.vis').textContent = s.vis;
+      s.node.classList.toggle('l2', or);
+      s.node.classList.toggle('l1', !or);
+      s.el.classList.toggle('active', !unpaired && s.latched);
+      setBadge(s.el, s.latched, unpaired);
+      s.el.querySelector('.vis').textContent = s.vis;
+    }
+    for (const src of ['play-button', 'toggle']) setBadge(nodes[src], state.events[src], opt.eventState !== 'own');
+    setBadge(nodes.replay, false, true);
+    $('#entry-runs').textContent = state.entryRuns;
+    $('#exit-runs').textContent = state.exitRuns;
+    $('#flow-note').textContent = flowNote();
+  }
+
+  function reset() {
+    state = {
+      instance: false, ctt: false, inActivation: false, inActive: false,
+      events: { 'play-button': false, 'toggle': false }, entryRuns: 0, exitRuns: 0,
+    };
+    sections.forEach((s) => { s.latched = false; s.vis = 'out of view'; s.wasInActivation = false; s.wasInActive = false; });
+    createAnimation();
+    const empty = document.createElement('li');
+    empty.className = 'empty';
+    empty.textContent = 'Nothing yet. Scroll the page or press a button.';
+    logEl.replaceChildren(empty);
+    scroller.scrollTop = 0;
+    drawRanges();
+    render();
+  }
+
+  let queued = false;
+  scroller.addEventListener('scroll', () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; evaluate(); });
+  });
+
+  $('#play-button').addEventListener('click', () => onEvent('play-button', 'click'));
+  $('#play-button').addEventListener('dblclick', () => onEvent('play-button', 'dblclick'));
+  $('#toggle').addEventListener('click', () => onEvent('toggle', 'click'));
+  $('#replay').addEventListener('click', () => onEvent('replay', 'click'));
+  $('#reset').addEventListener('click', reset);
+  Object.values(MENUS).forEach((menu) => menu.el.addEventListener('change', () => { readMenus(); reset(); }));
+  document.querySelectorAll('input[name="gap"]').forEach((r) => r.addEventListener('change', () => { applyGap(); reset(); }));
+  document.querySelectorAll('input[name="anim"]').forEach((r) => r.addEventListener('change', () => { readAnim(); applyGap(); reset(); }));
+
+  document.querySelectorAll('[data-jump]').forEach((b) => b.addEventListener('click', () => {
+    const s1 = sections[0].el, s2 = sections[1].el;
+    const view = scroller.clientHeight;
+    const middle = (el) => el.offsetTop + el.offsetHeight / 2 - view / 2;  // the section in the middle of the view
+    const targets = {
+      top: 0,
+      s1partly: s1.offsetTop - (view - 60),  // only the top of section 1 is visible
+      s1: anim === 'bump' ? middle(s1) : s1.offsetTop - 20,  // Bump: in its range; Bounce: fully in view
+      between: gapEl.offsetTop + gapEl.offsetHeight / 2 - view / 2,  // the gap in the middle of the view
+      s2: anim === 'bump' ? middle(s2) : s2.offsetTop - 20,
+      end: scroller.scrollHeight,
+    };
+    scroller.scrollTo({ top: targets[b.dataset.jump], behavior: 'smooth' });
+  }));
+
+  readMenus();
+  readAnim();
+  applyGap();
+  reset();
+})();
+</script>
+</body>
+</html>
